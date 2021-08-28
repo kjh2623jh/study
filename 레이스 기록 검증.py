@@ -14,4 +14,4 @@ try:
                 b.update({i:t})
     if b: raise KeyError
 except KeyError: print("NO")
-else: print("YES")
+else: print("YES") 
