@@ -10,4 +10,4 @@ while len(DD) > 1:
         if DD[i] < 1:
             DD.pop(i)
 
-print(list(DD.keys())[0])
+print(list(DD.keys())[0]) 
