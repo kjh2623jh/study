@@ -9,4 +9,4 @@ a = []
 for i in maxPeople:
     print(i, end=' ')
     for j in sorted(dayDic.values())[-i:]: print(j, end=' ')
-    print()
+    print() 
