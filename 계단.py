@@ -10,4 +10,4 @@ else:
         N -= M
         cnt += 1
     
-    print(cnt)
+    print(cnt) 
