@@ -9,7 +9,7 @@ rule("텔포")
 
 	condition
 	{
-		Is Meleeing(Event Player) == True;
+		Is Button Held(Event Player, Button(Interact)) == True;
 	}
 
 	action
