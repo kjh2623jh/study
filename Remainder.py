@@ -1,0 +1,1 @@
+print(','.join(map(str, (i//100 if i!=100 else 0 for i in map(int, input().split(','))))))
