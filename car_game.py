@@ -59,13 +59,21 @@ class Car:
 
  
 
-    def load_car(self):
+    def load_car(self, p = ""):
+        if p == "p":
+            # 플레이어 차량
+            self.image = pygame.image.load(DIRCARS + "Player.png")
+            # 크기 조정
+            self.image = pygame.transform.scale(self.image, (40, 102))
+            self.rect = self.image.get_rect()
+            self.rect.x = self.x
+            self.rect.y = self.y
+        else:
             # 상대방 자동차
-
-            # 40개의 이미지중에서 랜덤으로 선택한다.
             self.image = pygame.image.load(DIRCARS + random.choice(self.car_image))
             self.rect = self.image.get_rect()
 
+ 
 
             # 이미지 크기 조절 - 이미지마다 크기가 다 다르므로 가로 세로 비율 유지하면서 변경
             if self.rect.width <= 55:
@@ -87,9 +95,9 @@ class Car:
             self.rect.x = random.randrange(0, WINDOW_WIDTH - self.rect.width)
             self.rect.y = random.randrange(-150, -50)
 
+ 
 
             # STAGE에 따른 속도 변화, STAGE가 높아짐에 따라 자동차의 속도도 빨라진다.
-
             # 다양한 속도차이를 위해 5 ~ speed 사이에세 랜덤으로 속도를 선택하게 한다.
             speed = STAGE + 5
             if speed > 15:
@@ -159,7 +167,9 @@ def main():
 
     clock = pygame.time.Clock()
 
- 
+    # 플레이어 자동차 생성
+    player = Car(round(WINDOW_WIDTH / 2), round(WINDOW_HEIGHT - 150), 0, 0)
+    player.load_car("p")
 
     # 설정한 수 만큼 자동차 오브젝트 생성하여 CARS 리스트에 넣기
 
@@ -179,7 +189,31 @@ def main():
                 pygame.quit()
                 sys.exit()
 
+            # 화살표 키를 이용해서 플레이어의 움직임 거리를 조정해준다.
+            # 키를 떼면 움직임 거리를 0으로 한다.
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RIGHT:
+                    player.dx = 5
+                elif event.key == pygame.K_LEFT:
+                    player.dx = -5
+
+                if event.key == pygame.K_DOWN:
+                    player.dy = 5
+                elif event.key == pygame.K_UP:
+                    player.dy = -5
+
  
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    player.dx = 0
+                elif event.key == pygame.K_LEFT:
+                    player.dx = 0
+
+                if event.key == pygame.K_DOWN:
+                    player.dy = 0
+                elif event.key == pygame.K_UP:
+                    player.dy = 0
 
         # 배경색을 회색으로
         SCREEN.fill(GRAY)
@@ -188,7 +222,11 @@ def main():
 
         ''' 게임 코드 작성 '''
 
- 
+        # 플레이어를 스크린에 표시 및 화면 밖으로 못 벗어나게 하기
+        player.draw_car()
+        player.move_x()
+        player.move_y()
+        player.check_screen()
 
         # 다른 자동차들 도로위에 움직이기
         for i in range(CAR_COUNT):
