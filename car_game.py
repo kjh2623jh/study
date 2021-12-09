@@ -2,40 +2,80 @@ import sys
 import pygame
 import random
 
- 
 
 # 게임 화면 크기
 WINDOW_WIDTH = 550
 WINDOW_HEIGHT = 800
 
-
-
 # 색상
+BLACK = (0,0,0)
+WHITE = (255,255,255)
 GRAY = (150, 150, 150)
 
- 
-
 # 소스 디렉토리
-
 DIRCARS = "cars/"
-
 DIRSOUND = "sound/"
 
- 
-
 # 기본 변수
-
 STAGE = 1
-
 CAR_COUNT = 5
+SCORE = 0
+STAGESCORE = 0
+STAGESTAIR = 1000
 
- 
+# 플레이어 Life 갯수
+PNUMBER = 5
 
 # 자동차 오브젝트를 저장할 List
-
 CARS = []
 
+
+def draw_score():
+    # SCORE 기록
+    font_01 = pygame.font.SysFont("FixedSsy", 30, True, False)
+    text_score = font_01.render("Score : " + str(SCORE), True, BLACK)
+    SCREEN.blit(text_score, [15, 15])
+    
+    # STAGE 기록
+    text_stage = font_01.render("STAGE : " + str(STAGE), True, BLACK)
+    # 화면 가운데 위치
+    text_stage_rect = text_stage.get_rect()
+    text_stage_rect.centerx = round(WINDOW_WIDTH / 2)
+    SCREEN.blit(text_stage, [text_stage_rect.x, 15])
+
  
+
+    # 플레이어 Life 기록
+    for i in range(PNUMBER):
+        # 5개는 그림으로
+        if i < 5:
+            pimage = pygame.image.load(DIRCARS + 'Player.png')
+            pimage = pygame.transform.scale(pimage, (15, 38))
+            px = WINDOW_WIDTH - 20 - (i * 30)
+            SCREEN.blit(pimage, [px, 15])
+        # 5개가 넘으면 숫자로 표현해준다.
+        else:
+            text_pnumber = font_01.render("+" + str(PNUMBER - 5), True, WHITE)
+            text_pnumber_x = WINDOW_WIDTH - 30 - (5 * 30)
+            SCREEN.blit(text_pnumber, [text_pnumber_x, 25])
+
+def increase_score():
+    global SCORE, STAGE, STAGESCORE
+
+    # 점수 10점 추가
+    SCORE += 10
+
+    # STAGE별 증가율을 위한 stair 값 설정
+    if STAGE == 1:
+        stair = STAGESTAIR
+    else:
+        stair = (STAGE - 1) * STAGESTAIR
+
+    # 스테이지 별 증가율에 따른 STAGE 증가
+    if SCORE >= STAGESCORE + stair:
+        STAGE += 1
+        STAGESCORE = STAGESCORE + stair
+
 
 class Car:
     car_image = ['Car01.png', 'Car02.png', 'Car03.png', 'Car04.png', 'Car05.png', \
@@ -233,11 +273,31 @@ def main():
             CARS[i].draw_car()
             CARS[i].rect.y += CARS[i].dy
 
+            # 플레이어와 다른 차량 충돌 감지
+        for i in range(CAR_COUNT):
+            if player.check_collision(CARS[i], 5):
+                # 부딪쳤을 경우 상대방 차량 튕겨나게 함. 좌우 튕김
+                if player.rect.x > CARS[i].rect.x:
+                    CARS[i].rect.x -= CARS[i].rect.width + 10
+                    player.rect.x += player.rect.width + 2
+                else:
+                    CARS[i].rect.x += CARS[i].rect.width + 10
+                    player.rect.x -= player.rect.width + 2
+
  
+
+                # 위 아래 튕김
+                if player.rect.y > CARS[i].rect.y:
+                    CARS[i].rect.y -= 30
+                    player.rect.y += 6
+                else:
+                    CARS[i].rect.y += 30
+                    player.rect.y -= 6
 
             # 화면 아래로 내려가면 자동차를 다시 로드한다.
             # 로드시 자동차의 이미지가 랜덤으로 바뀌므로 새로운 자동차가 생긴 듯한 효과가 있다.
             if CARS[i].rect.y > WINDOW_HEIGHT:
+                increase_score()
                 CARS[i].load_car()
 
  
