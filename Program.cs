@@ -130,6 +130,28 @@
                 Console.WriteLine("test_num: {0}", test_num);
                 test_num--;
             } while (test_num > 10);
+
+            // break and continue
+
+            // and: a && b, or: a || b, not: !a
+
+            // 삼항연산자.   value = (a > b) ? A : B;    if (a>b) is true => A , false => B
+
+            // x + y
+             do {
+                Console.Write("x = ");
+                string str = Console.ReadLine();
+                if (str == "exit")
+                    break;
+
+                int x = Convert.ToInt32(str);
+
+                Console.Write("y = ");
+                int y = Convert.ToInt32(Console.ReadLine());
+
+                int sum = x + y;
+                Console.WriteLine("Result: {0}", sum);
+            } while (true);
         }
     }
 }
