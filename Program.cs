@@ -120,6 +120,12 @@
             }
             // for ( ; ;){} : infinite loop
 
+            // foreach   like for in Python
+            foreach (char txt in "test")
+            {
+                Console.WriteLine($"foreach_test.txt: {txt}");
+            }
+
             // do while
             test_num = 0;
             do {
@@ -138,6 +144,9 @@
             // 삼항연산자.   value = (a > b) ? A : B;    if (a>b) is true => A , false => B
 
             // x + y
+            Console.WriteLine();
+            Console.WriteLine("X + Y Program.");
+            Console.WriteLine("input 'exit' for exit Program.");
              do {
                 Console.Write("x = ");
                 string str = Console.ReadLine();
