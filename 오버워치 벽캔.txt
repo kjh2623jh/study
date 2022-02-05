@@ -1,0 +1,26 @@
+rule("Rule 1")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Jump)) != True;
+		Is In Air(Event Player) == True;
+		Distance Between(Eye Position(Event Player), Ray Cast Hit Position(Eye Position(Event Player), Eye Position(Event Player)
+			+ Facing Direction Of(Event Player) * 20, Null, Event Player, False)) < 3;
+	}
+
+	action
+	{
+		Press Button(Event Player, Button(Jump));
+		Wait(0.017, Ignore Condition);
+		Start Forcing Throttle(Event Player, 1, 1, 0, 1, 0, 1);
+		Stop Forcing Throttle(Event Player);
+		Loop If Condition Is True;
+	}
+}
