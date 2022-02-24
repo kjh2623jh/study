@@ -2,6 +2,8 @@
 {
     class Program
     {
+        // static: not public
+        // The static keyword will be discussed later; it is used to make methods accessible in Main.
         static void Main(string[] args)
         {
             Console.WriteLine("GHelllo World");
@@ -147,7 +149,7 @@
             Console.WriteLine();
             Console.WriteLine("X + Y Program.");
             Console.WriteLine("input 'exit' for exit Program.");
-             do {
+            do {
                 Console.Write("x = ");
                 string str = Console.ReadLine();
                 if (str == "exit")
@@ -161,6 +163,111 @@
                 int sum = x + y;
                 Console.WriteLine("Result: {0}", sum);
             } while (true);
+
+            Console.WriteLine(Sqr(5));
+            SayHi();
+            Console.WriteLine(Sum(4, 5));
+            int sumFuncTest = Sum(5, 6);
+            Console.WriteLine(sumFuncTest);
+
+            Console.WriteLine(Pow(6)); // result: 36
+            Console.WriteLine(Pow(2, 4)); // result: 16
+
+            Console.WriteLine(namedArguments(3, 4)); // a: 3, b: 4
+            Console.WriteLine(namedArguments(b: 6, a: 2)); // a: 2, b: 6
+
+            int reftest = 3;
+            refFunc(ref reftest);  // The ref keyword is used both when defining the method and when calling it.
+            Console.WriteLine(reftest); // outputs 9
+
+            int outtestA, outtestB;
+            outfunc(out outtestA, out outtestB);
+            // outtestA: 5, outtestB: 13
+
+            Print(5);
+            Print(5.12);
+            Print("double a: ", 3.14);
+
+            Console.WriteLine(Fact(4)); // outputs 24
+
+            DrawPyramid(5);
+        }
+
+        static int Sqr(int x)  // void is a basic data type that defines a valueless state.
+        {
+            int result = x*x;
+            return result;
+        }
+
+        static void SayHi()
+        {
+            Console.WriteLine("Hello");
+        }
+
+        static int Sum(int x, int y)
+        {
+            return x+y;
+        }
+
+        static int Pow(int x, int y=2) // default value
+        {
+        int result = 1;
+        for (int i = 0; i < y; i++)
+        {
+            result *= x;
+        }
+        
+        return result;
+        }
+
+        static int namedArguments(int a, int b)
+        {
+            return a * b;
+        }
+
+        static void refFunc(ref int x) // return 을 사용하지 않아도 값을 변경 python 의 global 같은??
+        {
+            x = x*x;
+        }
+
+        static void outfunc(out int x, out int y)
+        {
+            x = 5;
+            y = 13;
+        }
+
+        static void Print(int a)
+        {
+            Console.WriteLine("Value: "+a);
+        }
+        static void Print(double a)
+        {
+            Console.WriteLine("Value: "+a);
+        }
+        // Now, the same Print method name will work for both integers and doubles.
+        static void Print(string label, double a)
+        {
+            Console.WriteLine(label + a);
+        }
+
+        static int Fact(int num) {
+            if (num == 1) {
+                return 1;
+            }
+            return num * Fact(num - 1);
+        }
+
+        static void DrawPyramid(int n)
+        {
+            for (int i = 1; i <= n; i++){
+                for (int j = i; j <= n; j++){
+                    Console.Write("  ");
+                }
+                for (int k = 1; k <= 2*i-1; k++){
+                    Console.Write("*" + " ");
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
