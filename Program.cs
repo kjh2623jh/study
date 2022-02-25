@@ -191,6 +191,19 @@
             Console.WriteLine(Fact(4)); // outputs 24
 
             DrawPyramid(5);
+
+
+            //class
+            Person p1 = new Person();
+            p1.sayHi();
+
+            Dog bob = new Dog();
+            bob.name = "Bobby";
+            bob.age = 3;
+
+            Console.WriteLine(bob.age);
+
+            //Encapsulation ( information hiding )
         }
 
         static int Sqr(int x)  // void is a basic data type that defines a valueless state.
@@ -268,6 +281,23 @@
                 }
                 Console.WriteLine();
             }
+        }
+
+        class Person
+        {
+            int age;
+            string name;
+            public void sayHi()  // the member is private by default.
+                                 // private (static?) 함수는 해당 클래스에서만 사용됨. 타 클래스에서 접근 불가능.
+            {
+                Console.WriteLine("Hi");
+            }
+        }
+    
+        class Dog
+        {
+            public string name;
+            public int age;
         }
     }
 }
