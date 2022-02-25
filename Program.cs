@@ -203,7 +203,25 @@
 
             Console.WriteLine(bob.age);
 
-            //Encapsulation ( information hiding )
+
+            // Encapsulation ( information hiding )
+
+            // In summary, the benefits of encapsulation are:
+            // - Control the way data is accessed or modified.
+            // - Code is more flexible and easy to change with new requirements.
+            // - Change one part of code without affecting other parts of code.
+            BankAccount b = new BankAccount();
+            b.Deposit(199);
+            b.Withdraw(42);
+            Console.WriteLine(b.GetBalance());
+
+
+            // Constructors
+            // i think it is like __init__ in python
+            ConstructorsClass constructorsValue = new ConstructorsClass();
+
+            Person2 p2 = new Person2("David");
+            Console.WriteLine(p2.getName());
         }
 
         static int Sqr(int x)  // void is a basic data type that defines a valueless state.
@@ -298,6 +316,45 @@
         {
             public string name;
             public int age;
+        }
+    
+        class BankAccount
+        {
+            private double balance = 0;
+            public void Deposit(double n)
+            {
+                balance += n;
+            }
+            public void Withdraw(double n)
+            {
+                balance -= n;
+            }
+            public double GetBalance()
+            {
+                return balance;
+            }
+        }
+    
+        class ConstructorsClass
+        {
+            public ConstructorsClass()
+            {
+                Console.WriteLine("Hello");
+            }
+        }
+
+        class Person2
+        {
+            private int age;
+            private string name;
+            public Person2(string nm)
+            {
+                name = nm;
+            }
+            public string getName()
+            {
+                return name;
+            }
         }
     }
 }
