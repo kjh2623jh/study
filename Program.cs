@@ -222,6 +222,12 @@
 
             Person2 p2 = new Person2("David");
             Console.WriteLine(p2.getName());
+
+
+            // properties
+            Person3 p3 = new Person3();
+            p3.Name = "Bob";
+            Console.WriteLine(p3.Name);
         }
 
         static int Sqr(int x)  // void is a basic data type that defines a valueless state.
@@ -354,6 +360,30 @@
             public string getName()
             {
                 return name;
+            }
+        }
+
+        class Person3
+        {
+            private string name; // field
+            private int age = 0;
+            public string Name // property
+            {
+                get { return name; }
+                set { name = value; }
+            }
+            public string getName
+            {
+                get { return name; }
+            }
+
+            public int Age
+            {
+                get { return age; }
+                set {
+                    if (value > 0)
+                        age = value;
+                }
             }
         }
     }
