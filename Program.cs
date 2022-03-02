@@ -228,6 +228,93 @@
             Person3 p3 = new Person3();
             p3.Name = "Bob";
             Console.WriteLine(p3.Name);
+
+            // Auto-Implemented Properties
+            Person4 p4 = new Person4();
+            p4.Name = "Bob";
+            Console.WriteLine(p4.Name);
+
+
+            // array
+            int[] Array1 = new int[10];  // create array
+            Array1[0] = 5;
+
+            string[ ] names0 = new string[3] {"John", "Mary", "Jessica"};
+            // can omit the size declaration
+            string[ ] names1 = new string[ ] {"John", "Mary", "Jessica"};
+            // can even omit the new operator.
+            string[ ] names2 = {"John", "Mary", "Jessica"};
+
+            Console.WriteLine(names0[2]); // outputs: Jessica
+
+            // 빈 배열 생성
+            int[ , ] x0 = new int[3,4];  // two-dimensional
+            int[ , , ] x1 = new int[3,4,5];  // three
+            // 배열 생성
+            int[ , ] someNums = { {2, 3}, {5, 6}, {4, 6} }; 
+
+            for (int k = 0; k < 3; k++) {
+                for (int j = 0; j < 2; j++) {
+                    Console.Write(someNums[k, j]+" ");
+                }
+                Console.WriteLine();
+            }
+
+            // Jagged Array
+            int[ ][ ] jaggedArr = new int[ ][ ] 
+            {
+                new int[ ] {1,8,2,7,9},
+                new int[ ] {2,4,6},
+                new int[ ] {33,42}
+            };
+            int jaggedArrx = jaggedArr[2][1];
+            Console.WriteLine(jaggedArrx);
+
+            // Arrays Properties
+            int[ ] arr0 = {2, 4, 7};
+            Console.WriteLine(arr0.Length);  // 배열 길이
+            Console.WriteLine(arr0.Rank);  // 배열 차수
+            Console.WriteLine(arr0.Max()); // 배열 최댓값
+            Console.WriteLine(arr0.Min()); // 배열 최솟값
+            Console.WriteLine(arr0.Sum()); // 배열 전체 합
+
+
+            // Strings
+            string a = "some text";
+            Console.WriteLine(a.Length);
+            //Outputs 9
+
+            Console.WriteLine(a.IndexOf('t'));
+            //Outputs 5
+
+             a = a.Insert(0, "This is ");
+            Console.WriteLine(a);
+            //Outputs "This is some text"
+
+            a = a.Replace("This is", "I am");
+            Console.WriteLine(a);
+            //Outputs "I am some text"
+
+            if(a.Contains("some"))
+                Console.WriteLine("found");
+            //Outputs "found"
+
+            a = a.Remove(4);   // 인덱스 4~ 를 제거
+            Console.WriteLine(a);
+            //Outputs "I am"
+
+            a = a.Substring(2);  // 인덱스 2~ 이외를 제거
+            Console.WriteLine(a);
+            //Outputs "am"
+
+            Console.WriteLine(a[1]);
+            //Outputs "m"
+
+            string text = "This is some text about a dog. The word dog appears in this text a number of times. This is the end.";
+            text = text.Replace("dog", "cat");
+            text = text.Substring(0, text.IndexOf(".")+1);  // 인덱스 0 부터 ~dog. 까지 이외를 제거
+            
+            Console.WriteLine(text);
         }
 
         static int Sqr(int x)  // void is a basic data type that defines a valueless state.
@@ -385,6 +472,12 @@
                         age = value;
                 }
             }
+        }
+    
+        // Auto-Implemented Properties
+        class Person4
+        {
+            public string Name { get; set; }
         }
     }
 }
