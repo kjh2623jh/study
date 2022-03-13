@@ -315,6 +315,26 @@
             text = text.Substring(0, text.IndexOf(".")+1);  // 인덱스 0 부터 ~dog. 까지 이외를 제거
             
             Console.WriteLine(text);
+
+
+            // type
+            int level = 5;
+            float strength = 15.5f;
+            string playerName = "홍길동";
+            bool isFullLevel = false;
+            Console.WriteLine(level);
+            Console.WriteLine(strength);
+            Console.WriteLine(playerName);
+            Console.WriteLine(isFullLevel);
+
+            //list
+            List<string> items = new List<string>();
+            items.Add("생명물약30");
+            items.Add("마나물약30");
+
+            Console.WriteLine(items);
+            Console.WriteLine(items[0]);
+            Console.WriteLine(items[1]);
         }
 
         static int Sqr(int x)  // void is a basic data type that defines a valueless state.
