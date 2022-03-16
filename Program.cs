@@ -333,8 +333,15 @@
             items.Add("마나물약30");
 
             Console.WriteLine(items);
+
             Console.WriteLine(items[0]);
             Console.WriteLine(items[1]);
+
+            items.RemoveAt(0);
+
+            foreach (string txt in items) {
+                Console.WriteLine(txt);
+            }
         }
 
         static int Sqr(int x)  // void is a basic data type that defines a valueless state.
