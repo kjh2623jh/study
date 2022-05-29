@@ -1,0 +1,2725 @@
+settings
+{
+	main
+	{
+		모드 이름: "겐지 개척 파쿠르"
+		설명: "modified by 훈제김치                                                                                                            code : PYDJ3                                                                                                https://discord.gg/dyGvBbBgxV                                                          22.4.13"
+	}
+
+	lobby
+	{
+		경기 음성 대화: 활성화
+		대기실로 돌아가기: 안 함
+		대기열에 등록된 플레이어들도 허용: 네
+		최대 1팀 플레이어 수: 12
+		최대 2팀 플레이어 수: 0
+		최대 관전자 수: 3
+	}
+
+	modes
+	{
+		disabled 데스매치
+		{
+			게임 진행 시간분: 15
+			승점: 5000
+			직접 부활: 비활성화
+		}
+
+		연습 전투
+		{
+			enabled maps
+			{
+				리알토
+			}
+		}
+
+		disabled 훈련장
+		{
+			훈련 상대: 비활성화
+			훈련용 봇 생성: 비활성화
+		}
+
+		일반
+		{
+			게임 모드 시작: 즉시
+			무작위 영웅으로 부활: 활성화
+			부활 시간 조정: 0%
+			생명력 팩 생성: 비활성화
+			실시간 처치 정보: 비활성화
+			영웅 변경 허용: 비활성화
+			영웅 제한: 비활성화
+			적 생명력 막대: 비활성화
+			처치 영상: 비활성화
+		}
+	}
+
+	heroes
+	{
+		일반
+		{
+			궁극기: 비활성화
+
+			D.Va
+			{
+				궁극기 보유 상태로 시작: 활성화
+				자폭 밀쳐내기 수준 조정: 200%
+				주는 피해: 500%
+			}
+
+			겐지
+			{
+				탄창 제한 없음: 활성화
+				튕겨내기: 비활성화
+			}
+
+			레킹볼
+			{
+				갈고리 고정 재사용 대기시간: 20%
+				이동 속도: 125%
+				이동 중력: 75%
+			}
+
+			리퍼
+			{
+				수직 점프 속도: 158%
+				이동 속도: 220%
+				이동 중력: 25%
+			}
+
+			메르시
+			{
+				부활: 비활성화
+				수직 점프 속도: 400%
+			}
+
+			enabled heroes
+			{
+				겐지
+			}
+		}
+	}
+
+	workshop
+	{
+		개척 최소 거리minimum distance between check points: 7.000
+		개척지 크기size of check point: 1.500
+		저장 방법 설명how to save: 비활성화
+	}
+}
+
+variables
+{
+	global:
+		26: AA
+		27: AB
+		28: AC
+		29: AD
+		30: AE
+		31: AF
+		32: AG
+		33: AH
+		34: AI
+		35: AJ
+		36: AK
+		37: AL
+		38: AM
+		39: AN
+		40: AO
+		41: AP
+		42: AQ
+		43: AR
+		44: AS
+		45: AT
+		46: AU
+		47: AV
+		48: AW
+		49: AX
+		50: AY
+		51: AZ
+		52: BA
+		53: BB
+		54: BC
+		55: BD
+		56: BF
+		57: BG
+		58: BH
+		59: BI
+		68: BJ
+		69: BK
+		70: BL
+		71: BM
+		72: BN
+		73: BO
+		75: BP
+
+	player:
+		26: AA
+		27: AB
+		28: AC
+		29: AD
+		30: AE
+		31: AF
+		32: AG
+		33: AH
+		34: AI
+		35: AJ
+		36: AK
+		37: AL
+		38: AM
+		39: AN
+		40: AO
+		85: AP
+}
+
+subroutines
+{
+	0: init
+	1: memory
+	2: serverloadbuffer
+	3: serverloadbuffer2
+	6: DvaPos
+	7: genjiparkour
+}
+
+rule("paste here./이곳에 붙여넣으세요.")
+{
+	event
+	{
+		Subroutine;
+		memory;
+	}
+}
+
+rule("기본변수설정")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	action
+	{
+		Disable Inspector Recording;
+		Call Subroutine(genjiparkour);
+		Global.F = Workshop Setting Integer(Custom String("기본설정(Setting)"), Custom String(
+			"경쟁모드에서의 단계수(last check point in competition mode)"), 30, 1, 100, 0);
+		Global.N = Workshop Setting Real(Custom String("기본설정(Setting)"), Custom String("개척지 크기(size of check point)"), 2, 0.100, 3, 0);
+		If(Custom String("{0}", Hero(겐지)) == Custom String("겐지"));
+			Global.AH = Array(Array(Custom String(
+				"Recommended Workshop of the Week\r\nOthello/reversi(code: eaavv)\r\nOthello! now play!\r\n\r\n\r\n\r\n\r\n\r\n\r\n")), Array(
+				Custom String("겐지 파쿠르 디스코드 있습니다! 유튜브 통해 들어오세요\r\n유튜브 : nemi (겐지파쿠르도 같이 검색하면 바로 나옵니다,)\r\n\r\n\r\n\r\n\r\n\r\n")), Array(
+				Custom String(
+				"Recommended Workshop of the Week\r\nOthello/reversi(code: eaavv)\r\nOthello! now play!\r\n\r\n\r\n\r\n\r\n\r\n\r\n")), Array(
+				Custom String(
+				"Recommended Workshop of the Week\r\nOthello/reversi(code: eaavv)\r\nOthello! now play!\r\n\r\n\r\n\r\n\r\n\r\n\r\n")));
+		End;
+		Global.AB = Empty Array;
+		Global.AC = Empty Array;
+		Global.AD = Empty Array;
+		Global.AJ = Workshop Setting Real(Custom String("기본설정(Setting)"), Custom String("개척 최소 거리(minimum distance between check points)"),
+			10, 2, 100, 0);
+		Global.AO = Custom String("");
+		Global.AM[11] = 0;
+		Global.AI = Workshop Setting Real(Custom String("기본설정(Setting)"), Custom String("영웅 크기(scale of hero)"), 1, 0.100, 10, 0);
+		Wait Until(Is Game In Progress, 99999);
+		Skip If(Game Mode(데스매치) == Current Game Mode, 1);
+		Wait(5, Ignore Condition);
+		Call Subroutine(memory);
+		If(Global.Z == 1);
+			Global.Y = Array(Custom String("단계 변경\r\n"), Custom String("관전/관전취소\r\n"), Custom String(
+				" \r\n\r\n\r\n제작: 깨꾸\r\n코드: X8080\r\n수정: 훈제김치\r\n코드: PYDJ3"), Custom String("단계 순위"), Custom String("개척취소"), Custom String(
+				"제작: "), Custom String("다시시작\r\n"), Custom String(" 님이 개척하는 중입니다."), Custom String("다른 플레이어가 도착할 때까지 기다리세요."), Custom String(
+				"무한 모드"), Custom String("시간제한"), Custom String("스킬 횟수 제한"), Custom String("개척자 교체까지 남은 시간"), Custom String(" 승리까지 남은 시간"),
+				Custom String("다음 개척지\r\n개척자: "), Custom String(" 님, 10M이상 떨어진 곳에 착지하세요."), Custom String("마지막 "), Custom String(
+				"단계 개척자는 개척하고 10초후에 이동할 수 있습니다."), Custom String("다시하세요!"), Custom String(" 님이 개척하였습니다!"), Custom String(
+				"10초후에 마지막 단계로 갈 수 있습니다."), Custom String("시간초과!"), Custom String("도착!"), Custom String(" 님이 마지막 개척을 취소했습니다."), Custom String(
+				" 승리!"), Custom String("자유 모드"), Custom String("경쟁 모드"), Custom String("현재 단계까지 파쿠르를 저장할 수 있습니다."), Custom String("클리어"),
+				Custom String("다시 시작!"), Custom String("제작중..."), Custom String("저장한 뒤에도 개척지를 추가할 수 있습니다."), Custom String("다음 위치 보기\r\n"),
+				Custom String("분 "), Custom String("초"), Custom String("기지에서 나온 후, "), Custom String("시작할 위치에서 궁극기를 누르세요."), Custom String(
+				"다음 위치"), Custom String("인사"), Custom String("투명화"), Custom String("투명화해제\r\n"), Custom String("제자리 가기\r\n"), Custom String(
+				"제작도구: 깨꾸의 개척파쿠르\r\n수정: 훈제김치\r\n코드: PYDJ3"), Custom String("개척하기"));
+		Else If(Global.Z == 2);
+			Global.Y = Array(Custom String("更改步骤\r\n"), Custom String("观看/取消观看\r\n"), Custom String(
+				" \r\n\r\n\r\nmade by kaeku\r\ncode: X8080\r\nmodified by 훈제김치\r\ncode : PYDJ3"), Custom String("level排名"), Custom String(
+				"取消先驱"), Custom String("生产："), Custom String("重新启动\r\n"), Custom String("开创性"), Custom String("等待其他玩家到达。"), Custom String(
+				"无限模式"), Custom String("超时"), Custom String("技能计数限制"), Custom String("剩下的时间来替换开拓者"), Custom String("获胜的剩余时间"), Custom String(
+				"下一位开拓者\r\n先锋："), Custom String(",登陆距离超过10M。"), Custom String("最后一个"), Custom String("皮尔斯先驱者可以在开创后移动10秒。"), Custom String(
+				"请再做一次！"), Custom String("先行者！"), Custom String("您可以在10秒内转到最后一步。"), Custom String("超时！"), Custom String("到达！"), Custom String(
+				"您取消了最后一位先驱。"), Custom String(" 胜利！"), Custom String("自由模式"), Custom String("竞争模式"), Custom String("您可以保存此跑酷"), Custom String(
+				"清除"), Custom String("重新启动！"), Custom String("正在生产中..."), Custom String("保存后可以添加边界。"), Custom String("查看下一个位置\r\n"),
+				Custom String("分 "), Custom String("秒"), Custom String("从大本营搬出去, "), Custom String("按最终(Q)选择起点."), Custom String("下个阶段"),
+				Custom String("你好"), Custom String("无形"), Custom String("出现\r\n"), Custom String("转到位置\r\n"), Custom String(
+				"making tool: kaeku's pioneer parkour\r\nmodified by 훈제김치\r\ncode : PYDJ3"), Custom String("开发 "));
+		Else If(Global.Z == 3);
+			Global.Y = Array(Custom String("段階変更\r\n"), Custom String("観戦/観戦キャンセル\r\n"), Custom String(
+				" \r\n\r\n\r\nmade by kaeku\r\ncode: X8080\r\nmodified by 훈제김치\r\ncode : PYDJ3"), Custom String("段階のランキング"), Custom String(
+				"開拓キャンセル"), Custom String("制作："), Custom String("再起動\r\n"), Custom String("さんが開拓しています。"), Custom String(
+				"他のプレイヤーが到着するまでお待ちください。"), Custom String("無限モード"), Custom String("時間制限"), Custom String("スキル回数制限"), Custom String(
+				"パイオニア交換までの残り時間"), Custom String("勝利まで残り時間"), Custom String("次のフロンティア\r\nパイオニア："), Custom String("様,10M以上離れたところに着地します。"),
+				Custom String("最後の"), Custom String("段階パイオニアは開拓し,10秒後に移動することができます。"), Custom String("もう一度してください！"), Custom String(
+				"さんが開拓しました！"), Custom String("10秒後に最後のステップに行くことができます。"), Custom String("タイムアウト！"), Custom String("到着！"), Custom String(
+				"さんが最後の開拓をキャンセルしました。"), Custom String("勝利！"), Custom String("自由モード"), Custom String("競争モード"), Custom String(
+				"この波クールを保存することができます。"), Custom String("クリア"), Custom String("再起動！"), Custom String("製作中..."), Custom String(
+				"保存した後もフロンティアを追加することができます。"), Custom String("次の場所を表示する\r\n"), Custom String("分 "), Custom String("秒"), Custom String(
+				"ベースキャンプから出て, "), Custom String("究極の(Q)を押して開始点を選択します."), Custom String("　次の\r\nステージ"), Custom String("你好"), Custom String(
+				"見えない"), Custom String("に見える\r\n"), Custom String("所定の位置へ\r\n"), Custom String(
+				"making tool: kaeku's pioneer parkour\r\nmodified by 훈제김치\r\ncode : PYDJ3"), Custom String("開拓"));
+		Else;
+			Global.Y = Array(Custom String("change current stage\r\n"), Custom String("OBSERVE/QUIT\r\n"), Custom String(
+				" \r\n\r\n\r\nmade by kaeku\r\ncode: X8080\r\nmodified by 훈제김치\r\ncode : PYDJ3"), Custom String("ranking"), Custom String(
+				"cancel "), Custom String("made by "), Custom String("RESET\r\n"), Custom String(" is making the next step."), Custom String(
+				"wait for other players to arrive."), Custom String("infinite mode"), Custom String("time limit"), Custom String(
+				"Skill count"), Custom String("time left for the 'pioneer' to change"), Custom String("'s victory to time left"),
+				Custom String("next check point\r\npioneer: "), Custom String(", land 10m away from your starting point."), Custom String(
+				"the person who made stage "), Custom String(" can move after 10 sec."), Custom String("try again!"), Custom String(
+				"  created the next check point!"), Custom String("you can go to the last stage after 10 sec."), Custom String("overtime!"),
+				Custom String("clear!"), Custom String(" cancelled to make the last stage."), Custom String(" win!"), Custom String(
+				"free mode"), Custom String("competitive mode"), Custom String("you can save these stages."), Custom String("clear"),
+				Custom String("reset!"), Custom String("Making..."), Custom String("After saving, you can add the check points."),
+				Custom String("VIEW THE NEXT CHECK POINT\r\n"), Custom String(":"), Custom String(""), Custom String(
+				"move out from the base camp and "), Custom String("press ultimate to select your starting point."), Custom String(
+				" next\r\nstage"), Custom String("hello"), Custom String("Invisible"), Custom String("visible\r\n"), Custom String(
+				"starting point\r\n"), Custom String("making tool: kaeku's pioneer parkour\r\nmodified by 훈제김치\r\ncode : PYDJ3"),
+				Custom String("to pioneer"));
+		End;
+		Global.AF = Workshop Setting Toggle(Custom String("기본설정(Setting)"), Custom String("관전(observe)"), True, 0);
+		Global.AG = Workshop Setting Toggle(Custom String("기본설정(Setting)"), Custom String("개척취소(cancle)"), True, 0);
+		Call Subroutine(serverloadbuffer);
+		Call Subroutine(serverloadbuffer2);
+		If(Game Mode(연습 전투) != Current Game Mode);
+			Create HUD Text(All Players(All Teams), Null, Null, Custom String("  "), Top, -0.800, Color(White), Color(White), Color(White),
+				Visible To, Default Visibility);
+			Create HUD Text(All Players(All Teams), Custom String("{0}:{1} | {2}", Round To Integer(Match Time / 60, Down), Round To Integer(
+				Match Time % 60, Down), Global.E ? Global.Y[12] : Custom String("{0}{1}", Global.J, Global.Y[13])), Null, Null, Top, -0.200,
+				Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		End;
+		Global.AK = Workshop Setting Integer(Custom String("기본설정(Setting)"), Custom String("개척제한시간(Time limit to pioneer)"), 120, 30, 3600,
+			0);
+		Set Match Time(Global.AK);
+		Set Objective Description(All Players(All Teams), Global.E ? Global.Y[12] : Custom String("{0}{1}", Global.J, Global.Y[13]),
+			Visible To and String);
+		Global.V = 0;
+		If(Current Map == Map(도라도));
+			Global.V = Array(Vector(-7.819, 5.019, 10.906), Vector(-5.498, 5.550, 13.430), Vector(33.977, 6.798, -2.614));
+		End;
+		Global.AH = 0;
+		Global.AL = Workshop Setting Integer(Custom String("기본설정(Setting)"), Custom String("개척취소시간(Time to cancle)"), 3, 1, 3600, 0);
+	}
+}
+
+rule("기타모드 시작")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Is Game In Progress == False;
+	}
+
+	action
+	{
+		Wait(2, Abort When False);
+		Set Match Time(1);
+	}
+}
+
+rule("서버부하방지용")
+{
+	event
+	{
+		Subroutine;
+		serverloadbuffer;
+	}
+
+	action
+	{
+		Disable Built-In Game Mode Scoring;
+		Create HUD Text(All Players(All Teams), Null, Null, Global.Y[3], Right, -0.400, Color(White), Color(White), Color(Purple),
+			Visible To, Default Visibility);
+		Disable Built-In Game Mode Completion;
+		Disable Built-In Game Mode Announcer;
+		Disable Built-In Game Mode Music;
+		Global.G = 1;
+		Chase Global Variable At Rate(P, 0, 1, None);
+		Create HUD Text(Filtered Array(Global.M, Is On Ground(Global.M) && Global.AG && Match Time && True), Custom String("{2}: {1} {0}",
+			Round To Integer(!Global.G || Number Of Players(All Teams) == 1 ? Global.P : Min(Global.P, Match Time), Up), Global.Y[4],
+			Input Binding String(Button(Primary Fire))), Null, Null, Top, -0.800, Color(Red), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		Create HUD Text(Filtered Array(All Players(All Teams), (Global.G == 2 && !Has Spawned(Global.J)) || (Number Of Players(All Teams)
+			== 1) || (Global.G != 2 && !Global.E)), Null, Custom String(
+			" \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"),
+			Custom String(
+			" \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"),
+			Top, -0.500, Color(White), Color(White), Color(White), Visible To, Default Visibility);
+		If(Global.A);
+			Create HUD Text(All Players(All Teams), Null, Null, Global.Y[42], Left, 3, Color(White), Color(White), Color(White),
+				Visible To and String, Default Visibility);
+			If(!Global.AA);
+				Create HUD Text(All Players(All Teams), Global.L[1] ? Custom String(" {0}{1} ", Global.Y[5], Global.K) : Null, Custom String(
+					"\r\n\r\n"), Null, Top, -1, Color(Purple), Color(White), Color(White), Visible To, Default Visibility);
+				Global.X = Count Of(Global.A) - 1;
+				Global.AE = Remove From Array(Remove From Array(Global.L, 0), Global.L[1]) && Global.L[1] ? False : True;
+				Create HUD Text(Filtered Array(All Players(All Teams), Global.AB), Custom String("{0}\r\n{1}{2}", Global.Y[28], Custom String(
+					"{0}{1}", Custom String("1: {0} {1}", Global.AC[Index Of Array Value(Global.AB, First Of(Sorted Array(Global.AB,
+					Current Array Element)))], Global.AD[Index Of Array Value(Global.AB, First Of(Sorted Array(Global.AB, Current Array Element)))
+					]), Global.AB[1] ? Custom String("\r\n2: {0} {1}", Global.AC[Index Of Array Value(Global.AB, Sorted Array(Global.AB,
+					Current Array Element)[1])], Global.AD[Index Of Array Value(Global.AB, Sorted Array(Global.AB, Current Array Element)[1])])
+					: Custom String("")), Global.AB[2] ? Custom String("\r\n3: {0} {1}", Global.AC[Index Of Array Value(Global.AB, Sorted Array(
+					Global.AB, Current Array Element)[2])], Global.AD[Index Of Array Value(Global.AB, Sorted Array(Global.AB,
+					Current Array Element)[2])]) : Custom String("")), Null, Null, Right, -0.700, Color(Lime Green), Color(White), Color(White),
+					Visible To and String, Default Visibility);
+			Else;
+				Global.AB = Empty Array;
+				Global.AC = Empty Array;
+				Global.AD = Empty Array;
+				Create HUD Text(Global.E, Custom String("{0}{1}", Global.E, Global.Y[15]), Null, Null, Top, -0.900, Color(White), Color(White),
+					Color(White), Visible To and String, Default Visibility);
+				Create HUD Text(All Players(All Teams), Global.Y[30], Null, Null, Top, -1, Color(Purple), Color(White), Color(White), Visible To,
+					Default Visibility);
+				Create HUD Text(Host Player, Null, Null, Global.Z ? Custom String("자유롭게 단계를 이동할 수 있습니다.\r\n마지막 단계를 클리어하면 개척할 수 있습니다.")
+					: Custom String(
+					"You can move the steps freely.\r\nYou can pioneer by clearing the final stage.\r\nIt's even better to delete and paste\r\nexisting act"),
+					Left, 2.050, Color(White), Color(White), Color(Orange), Visible To, Default Visibility);
+				Global.G = False;
+				Global.X = False;
+				Global.AE = False;
+			End;
+		Else;
+			Create HUD Text(All Players(All Teams), Null, Null, Global.Y[2], Left, 3, Color(White), Color(White), Color(White),
+				Visible To and String, Default Visibility);
+			If(Global.AH[Global.Z]);
+				For Global Variable(V, 0, Count Of(Global.AH[Global.Z]), 1);
+					Create HUD Text(All Players(All Teams), Null, Null, Global.AH[Global.Z][Global.V], Left, Global.V - 10, Color(White), Color(White),
+						Color(Sky Blue), Visible To, Default Visibility);
+				End;
+			Else;
+				Create HUD Text(All Players(All Teams), Null, Null, Custom String(" \r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n"), Left, -1,
+					Color(White), Color(White), Color(White), Visible To, Default Visibility);
+			End;
+			Global.E = Host Player;
+			Global.J = Global.E;
+			Create HUD Text(Filtered Array(All Players(All Teams),
+				Global.E && Global.E != Current Array Element && Current Array Element.A == Count Of(Global.A) - 1), Custom String("{0}{1}",
+				Global.E, Global.Y[7]), Null, Null, Left, -20, Color(Purple), Color(White), Color(White), Visible To and String,
+				Default Visibility);
+			Create HUD Text(Filtered Array(Global.J, !Global.E && Global.J.A == Count Of(Global.A) - 1), Global.Y[8], Null, Null, Left, -20,
+				Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+			Create HUD Text(All Players(All Teams), Custom String("{0}, {1}{2}", Custom String("{0}{1}", Global.E,
+				Global.Z == 1 ? Custom String(" 님") : Custom String("")), Game Mode(데스매치) == Current Game Mode ? Custom String("")
+				: Global.Y[35], Global.Y[36]), Null, Null, Top, -0.900, Color(White), Color(White), Color(White), Visible To and String,
+				Default Visibility);
+			Global.O = Last Text ID;
+			Create HUD Text(All Players(All Teams), Global.Y[9], Null, Null, Top, -1, Color(Blue), Color(White), Color(White),
+				Visible To and String, Default Visibility);
+			Modify Global Variable(O, Append To Array, Last Text ID);
+			If(Global.Z == 1);
+				Create HUD Text(Host Player, Custom String("{0}: 모드변경  　　\r\n{1}: 스킬 횟수 {2}", Input Binding String(Button(Interact)),
+					Input Binding String(Button(Reload)), Custom String("{0}제한\r\n{1}: 시간 {2}제한", Global.T ? Custom String("무") : Custom String(
+					""), Input Binding String(Button(Melee)), Global.S ? Custom String("무") : Custom String(""))), Null, Null, Top, -0.950, Color(
+					Green), Color(White), Color(White), Visible To and String, Default Visibility);
+			Else If(Global.Z == 2);
+				Create HUD Text(Host Player, Custom String("{0}: 模式变更  　　\r\n{1}: 技能 {2}", Input Binding String(Button(Interact)),
+					Input Binding String(Button(Reload)), Custom String("{0}数\r\n{1}: {2}有时间限制", Global.T ? Custom String("无") : Custom String(""),
+					Input Binding String(Button(Melee)), Global.S ? Custom String("没") : Custom String(""))), Null, Null, Top, -0.950, Color(
+					Green), Color(White), Color(White), Visible To and String, Default Visibility);
+			Else If(Global.Z == 3);
+				Create HUD Text(Host Player, Custom String("{0}: モードの変更  　　\r\n{1}: スキル{2}", Input Binding String(Button(Interact)),
+					Input Binding String(Button(Reload)), Custom String("{0}カウント\r\n{1}: 時間{2}制限", Global.T ? Custom String("ノ") : Custom String(
+					""), Input Binding String(Button(Melee)), Global.S ? Custom String("無") : Custom String(""))), Null, Null, Top, -0.950, Color(
+					Green), Color(White), Color(White), Visible To and String, Default Visibility);
+			Else;
+				Create HUD Text(Host Player, Custom String("{0}: change mode \r\n{1}: {2}", Input Binding String(Button(Interact)),
+					Input Binding String(Button(Reload)), Custom String("{0}skill count\r\n{1}: time {2}limit", Global.T ? Custom String("not ")
+					: Custom String(""), Input Binding String(Button(Melee)), Global.S ? Custom String("un") : Custom String(""))), Null, Null,
+					Top, -0.950, Color(Green), Color(White), Color(White), Visible To and String, Default Visibility);
+			End;
+			Modify Global Variable(O, Append To Array, Last Text ID);
+			Create HUD Text(Global.S, Global.Y[10], Null, Null, Top, -0.880, Color(Red), Color(White), Color(White), Visible To and String,
+				Default Visibility);
+			Modify Global Variable(O, Append To Array, Last Text ID);
+			Create HUD Text(Global.T, Global.Y[11], Null, Null, Top, -0.890, Color(Orange), Color(White), Color(White), Visible To and String,
+				Default Visibility);
+			Modify Global Variable(O, Append To Array, Last Text ID);
+			Global.AP = Array(Custom String("VaziracKakux"), Custom String("ChrisEvans"));
+			disabled If(Workshop Setting Toggle(Custom String("기본설정(Setting)"), Custom String("저장 방법 설명(how to save)"), True, 10));
+			disabled If(Global.Z == 1);
+			disabled Create HUD Text(Host Player, Null, Null, Custom String(
+				"\r\n제작하기\r\n→ 저장하기 직전 (미완성시 앉으면서) 근접공격하기\r\n→ ESC 누르기\r\n→ 워크샵 인스펙터\r\n→ 하단의 [x]클릭 "), Left, 1, Color(White), Color(White),
+				Color(White), Visible To, Default Visibility);
+			disabled Create HUD Text(Host Player, Null, Null, Custom String(
+				"→ ESC를 눌러 돌아간 후 다시 ESC를 눌러 워크샵 에디터 열기\r\n→ 가장 왼쪽 위의 + 클릭\r\n→ 오른쪽 주황색 [+]클릭\r\n→ 저장\r\n※개설자가 아니라면 아이디는 저장되지 않습니다."), Left, 2,
+				Color(White), Color(White), Color(White), Visible To, Default Visibility);
+			disabled Create HUD Text(Host Player, Null, Null, Custom String("코드: X8080으로 가끔씩 최신버전으로 업데이트 해주세요.\r\n유튜브 '깨꾸'에 설정하는 방법이 있습니다."), Left,
+				2.100, Color(White), Color(White), Color(Blue), Visible To, Default Visibility);
+			disabled Else;
+			disabled Create HUD Text(Host Player, Null, Null, Custom String(
+				"\r\nHow to save\r\n→ (Crouch if not finished)melee\r\n→ press ESC\r\n→ open workshop inspector\r\n→ click the [x]"), Left, 1,
+				Color(White), Color(White), Color(White), Visible To, Default Visibility);
+			disabled Create HUD Text(Host Player, Null, Null, Custom String(
+				"→ Press ESC to go back and press ESC again to open workshop editor\r\n→ click the [+] sign on the top left corner"), Left, 2,
+				Color(White), Color(White), Color(White), Visible To, Default Visibility);
+			disabled Create HUD Text(Host Player, Null, Null, Custom String(
+				"→ click the yellow [+] sign\r\n→ save workshop\r\n※If you are not the origin host player ID will not be saved"), Left, 2.100,
+				Color(White), Color(White), Color(White), Visible To, Default Visibility);
+			disabled End;
+			disabled End;
+		End;
+	}
+}
+
+rule("서버부하방지용2")
+{
+	event
+	{
+		Subroutine;
+		serverloadbuffer2;
+	}
+
+	action
+	{
+		Create HUD Text(Local Player, Null, Null, Custom String("{0}{1}{2}", Custom String("{0}{1}{2}", Custom String("{0}+{1}, {2}: ",
+			Input Binding String(Button(Interact)), Input Binding String(Button(Jump)), Input Binding String(Button(Crouch))),
+			Custom String("{0}{1}: {2}", First Of(Global.Y), Input Binding String(Button(Ultimate)), Global.Y[41]), Custom String(
+			"{0}: {1}/{2}", Global.Y[38], Global.Y[39], Global.Y[40])), Custom String("{0}{1}{2}",
+			Local Player != Global.E && Local Player != Global.M && Global.A && Global.AF && (Local Player.B != Count Of(Global.A)
+			- 1 || !(!Global.E || Global.M)) ? Custom String("{0}: {1}", Input Binding String(Button(Reload)), Global.Y[1]) : Global.AO,
+			Local Player != Global.M && Is On Ground(Local Player) && Global.A[Local Player.A + 1] ? Custom String("{0}: {1}",
+			Input Binding String(Button(Primary Fire)), Global.Y[32]) : Global.AO, Global.X ? Custom String("{0}+{1}: {2}",
+			Input Binding String(Button(Crouch)), Input Binding String(Button(Ultimate)), Global.Y[6]) : Global.AO),
+			Local Player == Host Player && Global.AA && !Global.E ? Custom String("{0}+{1}: {2}", Input Binding String(Button(Interact)),
+			Input Binding String(Button(Ultimate)), Global.Y[44]) : Global.AO), Right, -1, Color(White), Color(White), Color(Blue),
+			Visible To and String, Default Visibility);
+		If(Custom String("{0}", Hero(겐지)) == Custom String("겐지"));
+			Create HUD Text(Filtered Array(Local Player, Global.A), Custom String("{0}{1}{2}", Custom String("현재 단계: {0}/{1}{2}",
+				Local Player.A + 1, Count Of(Global.A), Global.X && !Local Player.K ? (Global.BJ ? Custom String(" {0}",
+				Total Time Elapsed - Local Player.L) : Custom String(" {0}:{1}", Round To Integer((Total Time Elapsed - Local Player.L) / 60,
+				Down), Round To Integer((Total Time Elapsed - Local Player.L) % 60, Down))) : Global.AO),
+				!Global.T ? Global.AO : Custom String("\r\n {0}", Custom String("{0}{1}", Ability Icon String(Hero Of(Local Player), Button(
+				Ability 1)), Local Player == Global.E ? Last Of(Global.C) : Local Player.G), Custom String("{0}{1}", Ability Icon String(
+				Hero Of(Local Player), Button(Ability 2)), Local Player == Global.E ? Last Of(Global.D) : Local Player.H), Custom String(
+				"{0}{1}", Ability Icon String(Hero Of(Local Player), Button(Secondary Fire)), Local Player == Global.E ? Last Of(Global.B)
+				: Local Player.F)), !Global.S ? Global.AO : Custom String("\r\n제한시간: {0}초", Is On Ground(Local Player)
+				? Global.R[Local Player.A] : (Local Player == Global.E ? Total Time Elapsed + 1 - Local Player.I : (Local Player.A == Count Of(
+				Global.A) - 1 ? 0 : Global.R[Local Player.A] - (Total Time Elapsed - Local Player.I))))), Null, Null, Right, -3, Color(Blue),
+				Color(White), Color(White), Visible To and String, Default Visibility);
+		Else If(Custom String("{0}", Hero(겐지)) == Custom String("源氏"));
+			Create HUD Text(Filtered Array(Local Player, Global.A), Custom String("{0}{1}{2}", Custom String("现阶段: {0}/{1}{2}",
+				Local Player.A + 1, Count Of(Global.A), Global.X && !Local Player.K ? Custom String(" {0}:{1}", Round To Integer((
+				Total Time Elapsed - Local Player.L) / 60, Down), Round To Integer((Total Time Elapsed - Local Player.L) % 60, Down))
+				: Global.AO), !Global.T ? Global.AO : Custom String("\r\n {0}", Custom String("{0}{1}", Ability Icon String(Hero Of(
+				Local Player), Button(Ability 1)), Local Player == Global.E ? Last Of(Global.C) : Local Player.G), Custom String("{0}{1}",
+				Ability Icon String(Hero Of(Local Player), Button(Ability 2)), Local Player == Global.E ? Last Of(Global.D) : Local Player.H),
+				Custom String("{0}{1}", Ability Icon String(Hero Of(Local Player), Button(Secondary Fire)), Local Player == Global.E ? Last Of(
+				Global.B) : Local Player.F)), !Global.S ? Global.AO : Custom String("\r\n剩余时间: {0}秒", Is On Ground(Local Player)
+				? Global.R[Local Player.A] : (Local Player == Global.E ? Total Time Elapsed + 1 - Local Player.I : (Local Player.A == Count Of(
+				Global.A) - 1 ? 0 : Global.R[Local Player.A] - (Total Time Elapsed - Local Player.I))))), Null, Null, Right, -3, Color(Blue),
+				Color(White), Color(White), Visible To and String, Default Visibility);
+		Else If(Custom String("{0}", Hero(겐지)) == Custom String("ゲンジ"));
+			Create HUD Text(Filtered Array(Local Player, Global.A), Custom String("{0}{1}{2}", Custom String("現在の段階: {0}/{1}{2}",
+				Local Player.A + 1, Count Of(Global.A), Global.X && !Local Player.K ? Custom String(" {0}:{1}", Round To Integer((
+				Total Time Elapsed - Local Player.L) / 60, Down), Round To Integer((Total Time Elapsed - Local Player.L) % 60, Down))
+				: Global.AO), !Global.T ? Global.AO : Custom String("\r\n {0}", Custom String("{0}{1}", Ability Icon String(Hero Of(
+				Local Player), Button(Ability 1)), Local Player == Global.E ? Last Of(Global.C) : Local Player.G), Custom String("{0}{1}",
+				Ability Icon String(Hero Of(Local Player), Button(Ability 2)), Local Player == Global.E ? Last Of(Global.D) : Local Player.H),
+				Custom String("{0}{1}", Ability Icon String(Hero Of(Local Player), Button(Secondary Fire)), Local Player == Global.E ? Last Of(
+				Global.B) : Local Player.F)), !Global.S ? Global.AO : Custom String("\r\n残り時間: {0}秒", Is On Ground(Local Player)
+				? Global.R[Local Player.A] : (Local Player == Global.E ? Total Time Elapsed + 1 - Local Player.I : (Local Player.A == Count Of(
+				Global.A) - 1 ? 0 : Global.R[Local Player.A] - (Total Time Elapsed - Local Player.I))))), Null, Null, Right, -3, Color(Blue),
+				Color(White), Color(White), Visible To and String, Default Visibility);
+		Else;
+			Create HUD Text(Filtered Array(Local Player, Global.A), Custom String("{0}{1}{2}", Custom String("cp: {0}/{1}{2}",
+				Local Player.A + 1, Count Of(Global.A), Global.X && !Local Player.K ? Custom String(" {0}:{1}", Round To Integer((
+				Total Time Elapsed - Local Player.L) / 60, Down), Round To Integer((Total Time Elapsed - Local Player.L) % 60, Down))
+				: Global.AO), !Global.T ? Global.AO : Custom String("\r\n {0}", Custom String("{0}{1}", Ability Icon String(Hero Of(
+				Local Player), Button(Ability 1)), Local Player == Global.E ? Last Of(Global.C) : Local Player.G), Custom String("{0}{1}",
+				Ability Icon String(Hero Of(Local Player), Button(Ability 2)), Local Player == Global.E ? Last Of(Global.D) : Local Player.H),
+				Custom String("{0}{1}", Ability Icon String(Hero Of(Local Player), Button(Secondary Fire)), Local Player == Global.E ? Last Of(
+				Global.B) : Local Player.F)), !Global.S ? Global.AO : Custom String("\r\ntime left: {0}", Is On Ground(Local Player)
+				? Global.R[Local Player.A] : (Local Player == Global.E ? Total Time Elapsed + 1 - Local Player.I : (Local Player.A == Count Of(
+				Global.A) - 1 ? 0 : Global.R[Local Player.A] - (Total Time Elapsed - Local Player.I))))), Null, Null, Right, -3, Color(Blue),
+				Color(White), Color(White), Visible To and String, Default Visibility);
+		End;
+	}
+}
+
+rule("접속시")
+{
+	event
+	{
+		Player Joined Match;
+		All;
+		겐지;
+	}
+
+	action
+	{
+		Event Player.J = False;
+		Event Player.A = 0;
+		Event Player.B = 0;
+		Set Move Speed(Event Player, Workshop Setting Integer(Custom String("기본설정(Setting)"), Custom String("이동속도(move speed)"), 100, 10,
+			1000, 0));
+		Create HUD Text(All Players(All Teams), Null, Null, String("{0} {1}", Event Player,
+			Event Player.K ? Event Player.K : Event Player.B + 1), Right, Index Of Array Value(Sorted Array(All Players(All Teams),
+			-1 * Current Array Element.B), Event Player) + 0.080 * Index Of Array Value(Sorted Array(All Players(All Teams),
+			Current Array Element.N), Event Player), Color(White), Color(White), Color(Aqua), Visible To Sort Order String,
+			Default Visibility);
+		Enable Death Spectate All Players(Event Player);
+		Enable Death Spectate Target HUD(Event Player);
+		Set Status(Event Player, Null, Phased Out, 9999);
+		If(Event Player == Global.E);
+			Set Match Time(Global.AK);
+			Skip If(Count Of(Global.A) > 1, 2);
+			Global.E = Random Value In Array(Remove From Array(All Players(All Teams), Event Player));
+			Skip(1);
+			Global.E = Random Value In Array(Filtered Array(Remove From Array(All Players(All Teams), Event Player),
+				Current Array Element.B == Count Of(Global.A) - 1));
+			Skip If(!Global.A, 1);
+			Teleport(Global.E, Last Of(Global.A));
+			Skip If(!Global.G || Number Of Players(All Teams) == 1, 1);
+			Global.J = Global.E;
+			Global.E.A = Global.E.B;
+		End;
+		Wait(0.250, Ignore Condition);
+		Event Player.J = True;
+		Event Player.R = Custom String("{0}", Event Player);
+		Skip If(!Is Hero Being Played(Hero(레킹볼), All Teams), 1);
+		Create HUD Text(Filtered Array(Event Player, !Global.I[Event Player.A] && Global.A && Event Player.A > Count Of(Global.A) - 1),
+			Custom String(" {0}{1} ", Ability Icon String(Hero(레킹볼), Button(Crouch)), Icon String(No)), Null, Null, Right, -1.900, Color(
+			Red), Color(White), Color(White), Visible To and String, Default Visibility);
+		If(Current Game Mode != Game Mode(연습 전투));
+			Disable Game Mode HUD(Event Player);
+		End;
+		Create Effect(Event Player, Ring, Global.BB[Global.AZ], Global.A[Event Player.A], Global.N, Visible To Position and Radius);
+		Create Effect(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Ring, Global.BB[Global.BA], Global.A[Event Player.A + 1],
+			Global.N, Visible To Position and Radius);
+		Skip If(!Global.BG, 1);
+		Create Effect(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Light Shaft, Global.BB[Global.BG + -1],
+			Global.A[Event Player.A + 1], Global.N, Visible To Position and Radius);
+		Create In-World Text(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Global.AE ? Global.Y[37] : Custom String("{0}{1}",
+			Global.Y[14], Global.L[Event Player.A + 1]), Global.A[Event Player.A + 1], 2, Do Not Clip, Visible To Position and String,
+			Global.BB[Global.BA], Default Visibility);
+		Skip If(!Global.BK, 1);
+		Create In-World Text(Filtered Array(Event Player, Global.A[Event Player.A + 2]), Custom String("다음"), Global.A[Event Player.A + 2],
+			2, Do Not Clip, Visible To Position and String, Global.BB[Global.BK + -1], Default Visibility);
+		Create Icon(Filtered Array(Event Player, !(Event Player.C || Event Player.Q) && Global.A[Event Player.A + 1] && !Is In View Angle(
+			Event Player, Global.A[Event Player.A + 1], 60)), Global.A[Event Player.A + 1], Flag, Visible To and Position,
+			Global.BB[Global.BA], True);
+		If(Global.AI != 1);
+			Start Scaling Player(Event Player, Global.AI, False);
+		End;
+	}
+}
+
+rule("시작지점설정")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Global.A == False;
+		Is Button Held(Global.E, Button(Ultimate)) == True;
+		Is On Ground(Global.E) == True;
+		Is In Spawn Room(Global.E) == False;
+		Is Game In Progress == True;
+	}
+
+	action
+	{
+		Destroy HUD Text(Global.O[0]);
+		Destroy HUD Text(Global.O[2]);
+		Destroy HUD Text(Global.O[3]);
+		Destroy HUD Text(Global.O[4]);
+		Global.O = 0;
+		Global.A = Array(Position Of(Global.E));
+		Create HUD Text(Global.E, Custom String("{0}{1}", Global.E, Global.Y[15]), Null, Null, Top, -0.900, Color(White), Color(White),
+			Color(White), Visible To and String, Default Visibility);
+		Global.B = 0;
+		Global.C = 0;
+		Global.D = 0;
+		Global.I = 0;
+		Global.R = 0;
+		If(Global.G == 2);
+			Create HUD Text(All Players(All Teams), Null, Custom String("{1}{0}{2}", Global.F, Global.Y[16], Global.Y[17]), Null, Right, -10,
+				Color(White), Color(Green), Color(White), Visible To and String, Default Visibility);
+		End;
+		Global.E.AC = False;
+	}
+}
+
+rule("출발지점으로")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Has Spawned(Event Player) == True;
+		Global.A[Event Player.A + 1] == True;
+		Event Player.C == False;
+	}
+
+	action
+	{
+		Event Player.AC = False;
+		Event Player.AE = True;
+		Start Rule(init, Restart Rule);
+		Wait(0.050, Ignore Condition);
+		If(Global.AY);
+			Set Facing(Event Player, Direction Towards(Global.A[Event Player.A], Global.A[Event Player.A + 1]), To World);
+	}
+}
+
+rule("제자리로")
+{
+	event
+	{
+		Subroutine;
+		init;
+	}
+
+	action
+	{
+		If(Hero Of(Event Player) == Hero(겐지));
+			Skip If(!Global.A[Event Player.A], 2);
+			If(Event Player == Global.E || Event Player.AE);
+				If(Global.AY == False);
+					Event Player.AE = False;
+				End;
+				Teleport(Event Player, Global.A[Event Player.A]);
+				Start Forcing Player Position(Event Player, Global.A[Event Player.A], False);
+				Apply Impulse(Event Player, Velocity Of(Event Player), -0.100, To World, Cancel Contrary Motion);
+				Set Status(Event Player, Null, Rooted, 0.500);
+				Cancel Primary Action(Event Player);
+			End;
+			Wait(0.050, Ignore Condition);
+			Event Player.F = Global.B[Event Player.A];
+			Event Player.G = Global.C[Event Player.A];
+			Event Player.H = Global.D[Event Player.A];
+			If(Event Player.A == Count Of(Global.A) - 1 || !Global.A[1]);
+				Set Secondary Fire Enabled(Event Player, True);
+				Set Ability 1 Enabled(Event Player, True);
+				Set Ability 2 Enabled(Event Player, True);
+				Allow Button(Event Player, Button(Crouch));
+			Else;
+				Set Secondary Fire Enabled(Event Player, True);
+				Set Ability 1 Enabled(Event Player, Event Player.G == True);
+				Set Ability 2 Enabled(Event Player, Event Player.H == True);
+				If(Global.I[Event Player.A] || !Is Hero Being Played(Hero(레킹볼), All Teams));
+					Allow Button(Event Player, Button(Crouch));
+				Else;
+					Disallow Button(Event Player, Button(Crouch));
+				End;
+			End;
+			Event Player.I = Total Time Elapsed;
+			Skip If(Event Player.B, 1);
+			Event Player.L = Total Time Elapsed;
+			disabled Skip If(Random Integer(0, 10), 2);
+			disabled Skip If(!Array Contains(Global.AP, Event Player.R), 1);
+			disabled Remove Player(Event Player);
+			disabled Cancel Primary Action(Event Player);
+			Wait(0.200, Ignore Condition);
+			Stop Forcing Player Position(Event Player);
+			Set Ability Cooldown(Event Player, Button(Secondary Fire), 0);
+			Set Ability Cooldown(Event Player, Button(Ability 1), 0);
+			Set Ability Cooldown(Event Player, Button(Crouch), 0);
+			Set Ability Cooldown(Event Player, Button(Ability 2), 0);
+			Event Player.S = False;
+			Set Gravity(Event Player, 100);
+			Global.BO[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))] = Total Time Elapsed - Event Player.L;
+	}
+}
+
+rule("부활")
+{
+	event
+	{
+		Player Died;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.A == True;
+		Event Player.D == False;
+	}
+
+	action
+	{
+		If(Event Player == Global.E);
+			Global.B[Event Player.A] = 0;
+			Global.C[Event Player.A] = 0;
+			Global.D[Event Player.A] = 0;
+			Global.I[Event Player.A] = 0;
+		End;
+		Event Player.AE = True;
+		Call Subroutine(init);
+		Resurrect(Event Player);
+		Clear Status(Event Player, Phased Out);
+		Set Status(Event Player, Null, Phased Out, 9999);
+	}
+}
+
+rule("다시하기")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player == Global.E;
+		Is On Ground(Event Player) == True;
+		Distance Between(Event Player, Global.A[Event Player.A]) > Global.N;
+		Is Alive(Event Player) == True;
+		(Distance Between(Event Player, Global.A[Event Player.A]) < Global.AJ || (Global.V && Is True For Any(Global.V, Distance Between(
+			Eye Position(Event Player), Current Array Element) < 1))) == True;
+		Global.W == False;
+		Has Status(Event Player, Rooted) == False;
+		Event Player.AC == False;
+	}
+
+	action
+	{
+		Event Player.P = True;
+		Global.W = True;
+		Global.B[Event Player.A] = 0;
+		Global.C[Event Player.A] = 0;
+		Global.D[Event Player.A] = 0;
+		Global.I[Event Player.A] = 0;
+		Start Rule(init, Restart Rule);
+		Wait(0.100, Ignore Condition);
+		Small Message(Event Player, Global.Y[18]);
+		Play Effect(Event Player, Debuff Impact Sound, Color(White), Event Player, 50);
+		Set Secondary Fire Enabled(Event Player, True);
+		Set Ability 1 Enabled(Event Player, True);
+		Set Ability 2 Enabled(Event Player, True);
+		Allow Button(Event Player, Button(Crouch));
+		Global.W = False;
+		If(Global.AY);
+			Set Facing(Event Player, Event Player.O, To World);
+		End;
+		Event Player.P = False;
+	}
+}
+
+rule("중간취소")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+		Event Player.AC != True;
+		Global.A == True;
+		(Event Player == Global.E && Global.W) == False;
+		Is Button Held(Event Player, Button(Crouch)) == False;
+		Hero Of(Event Player) != Hero(D.Va);
+	}
+
+	action
+	{
+		Event Player.AK = 1;
+		If(Event Player == Host Player && Global.X && !Global.E && Is Button Held(Event Player, Button(Interact)));
+			Event Player.A = Count Of(Global.A) - 2;
+			Event Player.B = Event Player.A;
+			Event Player.X = True;
+			Teleport(Event Player, Last Of(Global.A));
+		Else;
+			Event Player.P = True;
+			Skip If(Event Player != Global.E, 1);
+			Global.W = True;
+			Teleport(Event Player, Global.A[Event Player.A]);
+			If(Event Player == Global.E);
+				Global.B[Event Player.A] = 0;
+				Global.C[Event Player.A] = 0;
+				Global.D[Event Player.A] = 0;
+				Global.I[Event Player.A] = 0;
+			End;
+			Event Player.AE = True;
+			Start Rule(init, Restart Rule);
+			Wait(0.100, Ignore Condition);
+			Skip If(Event Player != Global.E, 1);
+			Global.W = False;
+			Skip If(!Global.A[Event Player.A + 1], 1);
+			If(Global.AY);
+				Set Facing(Event Player, Event Player.O, To World);
+			End;
+			Event Player.P = False;
+		End;
+	}
+}
+
+rule("개척자위치")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Using Ability 1(Event Player) == False;
+		Is Using Ability 2(Event Player) == False;
+		Is Firing Secondary(Event Player) == False;
+		Vertical Speed Of(Event Player) > 1;
+	}
+
+	action
+	{
+		Stop Accelerating(Event Player);
+		Wait(0.250, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+rule("개척시간")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.S == True;
+		Is On Ground(Event Player) == False;
+		Event Player.AC == False;
+	}
+
+	action
+	{
+		Event Player.I = Total Time Elapsed;
+	}
+}
+
+rule("도착시간초과")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.S == True;
+		Is On Ground(Event Player) == False;
+		Global.A[Event Player.A + 1] == True;
+		Global.R[Event Player.A] - (Total Time Elapsed - Event Player.I) < 0;
+	}
+
+	action
+	{
+		Start Rule(init, Restart Rule);
+		Wait(0.100, Ignore Condition);
+		Small Message(Event Player, Global.Y[21]);
+		Play Effect(Event Player, Debuff Impact Sound, Color(White), Event Player, 50);
+		Skip If(!Is Hero Being Played(Hero(레킹볼), All Teams), 2);
+		Apply Impulse(Event Player, -1 * Velocity Of(Event Player), 0.001, To World, Cancel Contrary Motion);
+		Teleport(Event Player, Global.A[Event Player.A]);
+	}
+}
+
+rule("땅에닿으면 죽음")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		겐지;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == True;
+		Global.A[Event Player.A + 1] == True;
+		Event Player != Global.E;
+		Distance Between(Event Player, Global.A[Event Player.A]) > Global.N;
+		Distance Between(Event Player, Global.A[Event Player.A + 1]) > Global.N;
+		Event Player.M == False;
+		Event Player.S == False;
+		Event Player.X == False;
+		Event Player.AC == False;
+	}
+
+	action
+	{
+		Event Player.P = True;
+		Play Effect(Event Player, Debuff Impact Sound, Color(White), Event Player, 50);
+		Event Player.AE = True;
+		Call Subroutine(init);
+		Wait(0.150, Ignore Condition);
+		If(Global.AY);
+			Set Facing(Event Player, Event Player.O, To World);
+		End;
+		Event Player.P = False;
+	}
+}
+
+rule("도착")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == True;
+		Global.A[Event Player.A + 1] == True;
+		Global.E != Event Player;
+		(!Is Button Held(Event Player, Button(Interact)) || Event Player.X) == True;
+		Is Alive(Event Player) == True;
+		Event Player.M == False;
+		Has Spawned(Event Player) == True;
+		Distance Between(Position Of(Event Player), Global.A[Event Player.A + 1]) < Global.N;
+		Event Player.S == False;
+		Event Player.Y == False;
+		Event Player.AC == False;
+	}
+
+	action
+	{
+		Event Player.A += 1;
+		If(Event Player.A == Count Of(Global.A) - 1 && Number Of Players(All Teams) != 1);
+			Global.M = False;
+		End;
+		Skip If(Event Player == Global.J && Number Of Players(All Teams) == 1, 2);
+		Small Message(Event Player, Global.Y[22]);
+		Play Effect(Event Player, Buff Explosion Sound, Color(White), Event Player, 50);
+		Skip If(!(!Global.G || Number Of Players(All Teams) == 1), 1);
+		Global.J = False;
+		If(Event Player.A - Event Player.B == 1);
+			Modify Player Variable(Event Player, B, Max, Event Player.A);
+			Global.BN[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))] = Event Player.B;
+		End;
+		If(Event Player != Global.J && !Global.X && !Global.E && Count Of(Global.A) - 1 == Event Player.A);
+			Set Match Time(Global.AK);
+			Global.E = Event Player;
+			Global.B[Event Player.A] = 0;
+			Global.C[Event Player.A] = 0;
+			Global.D[Event Player.A] = 0;
+			Global.I[Event Player.A] = 0;
+			Global.J = Event Player;
+			Event Player.X = False;
+			Set Ability 1 Enabled(Event Player, True);
+			Set Ability 2 Enabled(Event Player, True);
+			Set Secondary Fire Enabled(Event Player, True);
+			Allow Button(Event Player, Button(Crouch));
+		End;
+		Start Rule(init, Restart Rule);
+		If(Event Player.A != Count Of(Global.A) - 1);
+			Event Player.O = Direction Towards(Global.A[Event Player.A], Global.A[Event Player.A + 1]);
+			Wait(0.150, Ignore Condition);
+			If(Global.AY);
+				Set Facing(Event Player, Event Player.O, To World);
+			End;
+		End;
+	}
+}
+
+rule("개척")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == True;
+		Event Player == Global.E;
+		Distance Between(Global.A[Event Player.A], Event Player) >= Global.AJ;
+		Is Alive(Event Player) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == False;
+		Event Player.J == True;
+		Global.W == False;
+		(Global.V && Is True For Any(Global.V, Distance Between(Eye Position(Event Player), Current Array Element) <= 1)) == False;
+		" "
+		Event Player.AC == False;
+		disabled Is Button Held(Host Player, Button(Melee)) == True;
+	}
+
+	action
+	{
+		Event Player.AE = True;
+		Global.W = True;
+		Global.U = Position Of(Event Player);
+		Global.AM = Mapped Array(Global.AM, Distance Between(Global.U, Ray Cast Hit Position(Global.U, Global.U + Direction From Angles(
+			Current Array Index * 30, -45) * 15, Null, Null, False)));
+		While(Absolute Value(Count Of(Remove From Array(Global.AM, Last Of(Sorted Array(Global.AM, Current Array Element)))) - 5.500)
+			< 5.500);
+			Global.AM = Mapped Array(Global.AM, Global.AM[(Current Array Index + 11) % 12] + Current Array Element + Global.AM[(
+				Current Array Index + 1) % 12]);
+		End;
+		Global.AN[Count Of(Global.A)] = Ray Cast Hit Position(Global.U, Global.U + 15 * Direction From Angles(30 * Index Of Array Value(
+			Global.AM, Last Of(Sorted Array(Global.AM, Current Array Element))), -45), All Players(All Teams), Event Player, True);
+		Teleport(Filtered Array(Remove From Array(Players On Hero(Hero(겐지), Team 1), Event Player),
+			Current Array Element.A == Event Player.A), Last Of(Global.A));
+		Skip If(!Global.S, 1);
+		Global.R[Global.E.A] = Total Time Elapsed + 1 - Event Player.I;
+		Play Effect(Event Player, Ring Explosion Sound, Color(White), Event Player, 50);
+		Global.Q = Match Time;
+		Skip If(Number Of Heroes(Hero(겐지), All Teams) == 1, 2);
+		Start Rule(init, Restart Rule);
+		Wait(0.100, Ignore Condition);
+		If(Distance Between(Last Of(Global.A), Global.U) > Global.AJ);
+			Small Message(Filtered Array(All Players(All Teams), Current Array Element.A == Event Player.A), Custom String("{0}{1}",
+				Event Player, Global.Y[19]));
+			Modify Global Variable(A, Append To Array, Global.U);
+			Modify Global Variable(L, Append To Array, Event Player.R);
+			Global.E = False;
+			Global.U = False;
+			Set Secondary Fire Enabled(Event Player, True);
+			Set Ability 1 Enabled(Event Player, Event Player.G == True);
+			Set Ability 2 Enabled(Event Player, Event Player.H == True);
+			If(Global.I[Event Player.A] || !Is Hero Being Played(Hero(레킹볼), All Teams));
+				Allow Button(Event Player, Button(Crouch));
+			Else;
+				Disallow Button(Event Player, Button(Crouch));
+			End;
+			If(Global.G == 2);
+				Set Match Time(Global.AK + 60);
+				If(Count Of(Global.A) == Global.F);
+					Big Message(Event Player, Global.Y[20]);
+					Wait(0.250, Ignore Condition);
+					Set Ability 1 Enabled(Event Player, False);
+					Set Ability 2 Enabled(Event Player, False);
+					Set Secondary Fire Enabled(Event Player, True);
+					Disallow Button(Event Player, Button(Crouch));
+					Global.W = False;
+					Wait(9.750, Ignore Condition);
+					Set Secondary Fire Enabled(Event Player, True);
+					Set Ability 1 Enabled(Event Player, Global.C[Event Player.A] == True);
+					Set Ability 2 Enabled(Event Player, Global.D[Event Player.A] == True);
+					If(Global.I[Event Player.A]);
+						Allow Button(Event Player, Button(Crouch));
+					Else;
+						Disallow Button(Event Player, Button(Crouch));
+					End;
+				End;
+			End;
+			Wait(0.050, Ignore Condition);
+			Global.M = Event Player;
+			Global.W = False;
+			Skip If(!Global.G || Number Of Players(All Teams) == 1, 2);
+			"개척취소시간"
+			Global.P = Global.AL;
+			Skip(1);
+			Global.P = 120;
+		Else;
+			Global.W = False;
+		End;
+	}
+}
+
+rule("개척 취소")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player == Global.M;
+		Is Button Held(Event Player, Button(Primary Fire)) == True;
+		Global.P == True;
+		Is On Ground(Event Player) == True;
+		Match Time == True;
+		Global.W == False;
+		Global.AG == True;
+		Event Player.S == False;
+	}
+
+	action
+	{
+		Event Player.S = True;
+		Global.W = True;
+		Global.M = False;
+		Modify Global Variable(L, Remove From Array By Index, Count Of(Global.A) - 1);
+		Modify Global Variable(B, Remove From Array By Index, Count Of(Global.A) - 2);
+		Modify Global Variable(C, Remove From Array By Index, Count Of(Global.A) - 2);
+		Modify Global Variable(D, Remove From Array By Index, Count Of(Global.A) - 2);
+		Modify Global Variable(I, Remove From Array By Index, Count Of(Global.A) - 2);
+		Modify Global Variable(R, Remove From Array By Index, Count Of(Global.A) - 2);
+		Modify Global Variable(A, Remove From Array By Index, Count Of(Global.A) - 1);
+		Set Match Time(Global.Q - Workshop Setting Integer(Custom String("기본설정(Setting)"), Custom String(
+			"개척취소시 줄어드는시간(subtrack time when canle the pioneering)"), 3, 0, 60, 4));
+		Small Message(Filtered Array(All Players(All Teams), Current Array Element.A == Count Of(Global.A) - 1), Custom String("{0}{1}",
+			Event Player, Global.Y[23]));
+		Play Effect(All Players(All Teams), Ring Explosion Sound, Color(White), Event Player, 100);
+		Event Player.A = Count Of(Global.A) - 1;
+		Event Player.B = Event Player.A;
+		Start Rule(init, Restart Rule);
+		Wait(0.100, Ignore Condition);
+		Global.E = Event Player;
+		Set Ability 1 Enabled(Event Player, True);
+		Set Ability 2 Enabled(Event Player, True);
+		Set Secondary Fire Enabled(Event Player, True);
+		Allow Button(Event Player, Button(Crouch));
+		Global.B[Event Player.A] = 0;
+		Global.C[Event Player.A] = 0;
+		Global.D[Event Player.A] = 0;
+		Global.I[Event Player.A] = 0;
+		Global.W = False;
+	}
+}
+
+rule("우클")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Firing Secondary(Event Player) == True;
+	}
+
+	action
+	{
+		If(Event Player == Global.E);
+			Global.B[Count Of(Global.A) - 1] += 1;
+		Else If(Global.T && Event Player.A != Count Of(Global.A) - 1 && Count Of(Global.A) > 1);
+			Event Player.F -= 1;
+			If(Event Player.F < 1);
+				While(Is Firing Secondary(Event Player));
+					Wait(0.250, Restart When True);
+				End;
+				Skip If(Is On Ground(Event Player) || Event Player.F > 0, 3);
+				Wait(1, Restart When True);
+				Skip If(Is On Ground(Event Player) || Event Player.F > 0, 1);
+				Set Secondary Fire Enabled(Event Player, True);
+			End;
+		End;
+	}
+}
+
+rule("시프트")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Using Ability 1(Event Player) == True;
+	}
+
+	action
+	{
+		If(Event Player == Global.E);
+			Global.C[Count Of(Global.A) - 1] += 1;
+		Else If(Global.T && Event Player.A != Count Of(Global.A) - 1 && Count Of(Global.A) > 1);
+			Event Player.G -= 1;
+			Skip If(Event Player.G > 0, 5);
+			While(Is Using Ability 1(Event Player));
+				Wait(0.250, Restart When True);
+			End;
+			Skip If(Is On Ground(Event Player) || Event Player.G > 0, 1);
+			Set Ability 1 Enabled(Event Player, False);
+		End;
+	}
+}
+
+rule("E")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Using Ability 2(Event Player) == True;
+	}
+
+	action
+	{
+		If(Event Player == Global.E);
+			Global.D[Count Of(Global.A) - 1] += 1;
+		Else If(Global.T && Event Player.A != Count Of(Global.A) - 1 && Count Of(Global.A) > 1);
+			Event Player.H -= 1;
+			Skip If(Event Player.H > 0, 5);
+			While(Is Using Ability 2(Event Player));
+				Wait(0.250, Restart When True);
+			End;
+			Skip If(Is On Ground(Event Player) || Event Player.H > 0, 1);
+			Set Ability 2 Enabled(Event Player, False);
+		End;
+	}
+}
+
+rule("단계이동")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Global.A == True;
+		Event Player != Global.E;
+		(Is Button Held(Event Player, Button(Jump)) || Is Button Held(Event Player, Button(Crouch))) == True;
+		Event Player.S == False;
+	}
+
+	action
+	{
+		Event Player.AE = True;
+		Event Player.AC = False;
+		Skip If(!Global.S, 1);
+		Stop Chasing Player Variable(Event Player, I);
+		Stop Chasing Player Variable(Event Player, L);
+		Event Player.S = True;
+		Event Player.Y = True;
+		Set Status(Event Player, Null, Rooted, 0.100);
+		If(Is Button Held(Event Player, Button(Jump)));
+			If((Global.G && Event Player.A == Event Player.B) || (!Global.G && Event Player.A == Count Of(Global.A) - 1));
+				Event Player.A = 0;
+			Else;
+				Event Player.A += 1;
+			End;
+		Else;
+			If(Event Player.A);
+				Event Player.A -= 1;
+			Else If(Global.G);
+				Event Player.A = Event Player.B;
+			Else;
+				Event Player.A = Count Of(Global.A) - 1;
+			End;
+		End;
+		Skip If(Event Player.C, 2);
+		Set Facing(Event Player, Direction Towards(Global.A[Event Player.A], Global.A[Event Player.A + 1]), To World);
+		Start Rule(init, Restart Rule);
+		Wait(0.100, Ignore Condition);
+		Skip If(Event Player.C, 3);
+		Event Player.Y = False;
+		Wait(0.300, Abort When False);
+		Event Player.C = True;
+		Loop If Condition Is True;
+		Event Player.C = False;
+		Set Facing(Event Player, Direction Towards(Global.A[Event Player.A], Global.A[Event Player.A + 1]), To World);
+		Start Rule(init, Restart Rule);
+		Event Player.Y = False;
+	}
+}
+
+rule("승리")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.H == False;
+		Global.G == 2;
+		Event Player.A >= Global.F - 1;
+	}
+
+	action
+	{
+		Big Message(All Players(All Teams), Custom String("{0}{1}", Event Player, Global.Y[24]));
+		Global.H = True;
+		Wait(10, Ignore Condition);
+		If(Game Mode(데스매치) == Current Game Mode);
+			Declare Player Victory(Event Player);
+		Else;
+			Declare Team Victory(Team Of(Event Player));
+		End;
+	}
+}
+
+rule("개척시간제한")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Is Game In Progress == True;
+		Match Time == False;
+		Global.H == False;
+		Global.W == False;
+		Is True For Any(Array(Game Mode(깃발 뺏기), Game Mode(섬멸전), Game Mode(훈련장)), Current Array Element == Current Game Mode) == False;
+	}
+
+	action
+	{
+		Global.W = True;
+		If(Global.E && Global.G && Number Of Players(All Teams) > 1);
+			Global.M = False;
+			Skip If(Count Of(Global.A) > 1, 2);
+			Global.E = Random Value In Array(Remove From Array(All Players(All Teams), Global.E));
+			Skip(1);
+			Global.E = Random Value In Array(Remove From Array(Filtered Array(All Players(All Teams), Current Array Element.B == Count Of(
+				Global.A) - 1), Global.E));
+			Skip If(!Global.A, 1);
+			Teleport(Global.E, Last Of(Global.A));
+			Skip If(!Global.G || Number Of Players(All Teams) == 1, 1);
+			Global.J = Global.E;
+			Global.E.A = Global.E.B;
+		End;
+		Set Match Time(Global.AK);
+		Global.W = False;
+	}
+}
+
+rule("시간으로종료")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Is Game In Progress == True;
+		Match Time == False;
+		Global.H == False;
+		Global.E == False;
+		Global.J == True;
+		Global.G == 2;
+		Global.W == False;
+		Is True For Any(Array(Game Mode(깃발 뺏기), Game Mode(섬멸전), Game Mode(훈련장)), Current Array Element == Current Game Mode) == False;
+	}
+
+	action
+	{
+		Global.W = True;
+		Big Message(All Players(All Teams), Custom String("{0}{1}", Global.J, Global.Y[24]));
+		Global.H = True;
+		Wait(10, Ignore Condition);
+		If(Game Mode(데스매치) == Current Game Mode);
+			Declare Player Victory(Global.J);
+		Else;
+			Declare Team Victory(Team Of(Global.J));
+		End;
+	}
+}
+
+rule("탈주시")
+{
+	event
+	{
+		Player Left Match;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.E == Event Player;
+	}
+
+	action
+	{
+		Global.W = True;
+		Set Match Time(Global.AK);
+		Skip If(Count Of(Global.A) > 1, 2);
+		Global.E = Random Value In Array(Remove From Array(All Players(All Teams), Event Player));
+		Skip(1);
+		Global.E = Random Value In Array(Filtered Array(Remove From Array(All Players(All Teams), Event Player),
+			Current Array Element.B == Count Of(Global.A) - 1));
+		Skip If(!Global.A, 1);
+		Teleport(Global.E, Last Of(Global.A));
+		Skip If(!Global.G || Number Of Players(All Teams) == 1, 1);
+		Global.J = Global.E;
+		Global.E.A = Global.E.B;
+		Global.W = False;
+	}
+}
+
+rule("모드변경")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Global.A == False;
+		Is Button Held(Host Player, Button(Interact)) == True;
+		Global.O[1] == True;
+	}
+
+	action
+	{
+		Global.G -= 1;
+		Skip If(Global.G >= 0, 1);
+		Global.G = 2;
+		Destroy HUD Text(Global.O[1]);
+		If(!Global.G);
+			Create HUD Text(All Players(All Teams), Global.Y[25], Null, Null, Top, -1, Color(Yellow), Color(White), Color(White), Visible To,
+				Default Visibility);
+			Disable Built-In Game Mode Announcer;
+			Disable Built-In Game Mode Music;
+		Else If(Global.G == 1);
+			Disable Built-In Game Mode Announcer;
+			Disable Built-In Game Mode Music;
+			Create HUD Text(All Players(All Teams), Global.Y[9], Null, Null, Top, -1, Color(Blue), Color(White), Color(White), Visible To,
+				Default Visibility);
+		Else;
+			Enable Built-In Game Mode Announcer;
+			Enable Built-In Game Mode Music;
+			Create HUD Text(All Players(All Teams), Global.Y[26], Null, Null, Top, -1, Color(Red), Color(White), Color(White),
+				Visible To and String, Default Visibility);
+		End;
+		Global.O[1] = Last Text ID;
+	}
+}
+
+rule("횟수제한넣을지")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.A == False;
+		Is Button Held(Event Player, Button(Reload)) == True;
+		Event Player == Host Player;
+	}
+
+	action
+	{
+		Global.T = !Global.T;
+	}
+}
+
+rule("시간제한넣을지")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.A == False;
+		Is Button Held(Event Player, Button(Melee)) == True;
+		Event Player == Host Player;
+	}
+
+	action
+	{
+		Global.S = !Global.S;
+	}
+}
+
+rule("투명화")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.A == True;
+		Is Hero Being Played(Hero(레킹볼), All Teams) == False;
+		(Event Player.U || Event Player == Global.E || (Global.BC ? Distance Between(Event Player, Closest Player To(Event Player,
+			All Teams)) < 2 : False)) != Event Player.W;
+	}
+
+	action
+	{
+		Event Player.W = !Event Player.W;
+		If(Event Player.W);
+			Set Invisible(Event Player, All);
+		Else;
+			Set Invisible(Event Player, None);
+		End;
+	}
+}
+
+rule("투명화")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Communicating(Event Player, Hello) == True;
+	}
+
+	action
+	{
+		Event Player.U = !Event Player.U;
+		If(Event Player.U);
+			Small Message(Event Player, Global.Y[39]);
+		Else;
+			Small Message(Event Player, Global.Y[40]);
+		End;
+	}
+}
+
+rule("인스펙터저장")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Global.A == True;
+		Is Button Held(Host Player, Button(Melee)) == True;
+		Is On Ground(Host Player) == True;
+	}
+
+	action
+	{
+		Play Effect(Host Player, Ring Explosion Sound, Color(White), Host Player, 50);
+		Skip If(Global.X, 1);
+		Global.K = Host Player.R;
+		Global.AA = Is Button Held(Host Player, Button(Crouch));
+		If(Global.AA);
+			Small Message(Host Player, Global.Y[31]);
+		Else;
+			Small Message(Host Player, Global.Y[27]);
+		End;
+		Host Player.V = Global.Y;
+		Global.Y = 0;
+		Host Player.Z = Global.AP;
+		Global.AP = 0;
+		Host Player.AG = Global.AR;
+		Global.AR = 0;
+		Host Player.AH = Global.BM;
+		Global.BM = 0;
+		Host Player.AM = Global.BN;
+		Global.BN = 0;
+		Host Player.AN = Global.BO;
+		Global.BO = 0;
+		Host Player.AO = Global.AQ;
+		Global.AQ = 0;
+		Enable Inspector Recording;
+		Disable Inspector Recording;
+		Global.Y = Host Player.V;
+		Host Player.V = 0;
+		Global.AP = Host Player.Z;
+		Host Player.Z = 0;
+		Global.AR = Host Player.AG;
+		Host Player.AG = 0;
+		Global.BM = Host Player.AH;
+		Host Player.AH = 0;
+		Global.BN = Host Player.AM;
+		Host Player.AM = 0;
+		Global.BO = Host Player.AN;
+		Host Player.AN = 0;
+		Global.AQ = Host Player.AO;
+		Host Player.AO = 0;
+	}
+}
+
+rule("개척취소제한")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Global.M == True;
+		Global.P == False;
+	}
+
+	action
+	{
+		Global.M = False;
+	}
+}
+
+rule("관전")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Reload)) == True;
+		Is Button Held(Event Player, Button(Melee)) != True;
+		Global.A == True;
+		(Event Player.D || (Event Player != Global.M && (Event Player.B != Count Of(Global.A) - 1 || !(Global.E || Global.M)))) == True;
+		Global.AF == True;
+		(Event Player == Global.E && Global.M) == False;
+	}
+
+	action
+	{
+		Event Player.D = !Event Player.D;
+		If(Event Player.D);
+			Disable Built-In Game Mode Respawning(Event Player);
+			Chase Player Variable At Rate(Event Player, L, 100000000, 1, Destination and Rate);
+			Kill(Event Player, Null);
+			Skip If(Event Player.E, 3);
+			Event Player.E = True;
+			Wait(0.100, Ignore Condition);
+			Press Button(Event Player, Button(Jump));
+			Event Player.AI = False;
+			Event Player.AC = False;
+		Else;
+			Enable Built-In Game Mode Respawning(Event Player);
+			Skip If(!Global.S, 1);
+			Stop Chasing Player Variable(Event Player, I);
+			Stop Chasing Player Variable(Event Player, L);
+			Resurrect(Event Player);
+			Clear Status(Event Player, Phased Out);
+			Set Status(Event Player, Null, Phased Out, 9999);
+			Event Player.AE = True;
+			Call Subroutine(init);
+			Event Player.AI = True;
+		End;
+		Wait(0.400, Ignore Condition);
+	}
+}
+
+rule("클리어")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.X == True;
+		Event Player.B == Global.X;
+		Event Player.R == True;
+	}
+
+	action
+	{
+		Small Message(All Players(All Teams), Custom String("{0} {1}", Event Player, Global.Y[28]));
+		Play Effect(All Players(All Teams), Buff Explosion Sound, Color(White), Event Player, 100);
+		Skip If(Array Contains(Global.AC, Event Player.R) && Total Time Elapsed - Event Player.L > Global.AB[Index Of Array Value(
+			Global.AC, Event Player.R)], 8);
+		Event Player.N = Total Time Elapsed - Event Player.L;
+		Modify Global Variable(AB, Remove From Array By Index, Index Of Array Value(Global.AC, Event Player.R));
+		Modify Global Variable(AD, Remove From Array By Index, Index Of Array Value(Global.AC, Event Player.R));
+		Modify Global Variable(AC, Remove From Array By Index, Index Of Array Value(Global.AC, Event Player.R));
+		Modify Global Variable(AB, Append To Array, Event Player.N);
+		Modify Global Variable(AC, Append To Array, Event Player.R);
+		Modify Global Variable(AD, Append To Array, Global.BJ ? Event Player.N : Custom String("{0}:{1}", Round To Integer(
+			Event Player.N / 60, Down), Round To Integer(Event Player.N % 60, Down)));
+		Skip(2);
+		Skip If(Global.AB[Index Of Array Value(Global.AC, Event Player.R)] > Total Time Elapsed - Event Player.L, 1);
+		Event Player.N = Global.AB[Index Of Array Value(Global.AC, Event Player.R)];
+		Event Player.K = Custom String("{0} {1}", Global.BJ ? Event Player.N : Custom String("{0}:{1}", Round To Integer(
+			Event Player.N / 60, Down), Round To Integer(Event Player.N % 60, Down)), Global.Y[28]);
+	}
+}
+
+rule("다시시작")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.X == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is Button Held(Event Player, Button(Ultimate)) == True;
+	}
+
+	action
+	{
+		Event Player.AC = False;
+		Skip If(!Global.S, 1);
+		Stop Chasing Player Variable(Event Player, I);
+		Stop Chasing Player Variable(Event Player, L);
+		Event Player.M = True;
+		Event Player.K = False;
+		Event Player.A = 0;
+		Event Player.B = 0;
+		Event Player.AE = True;
+		Start Rule(init, Restart Rule);
+		Wait(0.100, Ignore Condition);
+		Event Player.M = False;
+		Small Message(Event Player, Global.Y[29]);
+		Play Effect(Event Player, Buff Explosion Sound, Color(White), Event Player, 100);
+	}
+}
+
+rule("방향저장")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == False;
+		Event Player.P == False;
+	}
+
+	action
+	{
+		Event Player.O = Facing Direction Of(Event Player);
+	}
+}
+
+rule("다음위치보기")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		(!Global.W && Is On Ground(Event Player) && Event Player != Global.M && Global.A[Event Player.A + 1] && Is Button Held(
+			Event Player, Button(Primary Fire))) != Event Player.Q;
+		Event Player.AC == False;
+	}
+
+	action
+	{
+		Event Player.Q = !Event Player.Q;
+		If(Event Player.Q);
+			Set Primary Fire Enabled(Event Player, False);
+			Event Player.Q = Global.AN[Event Player.A + 1];
+			Start Camera(Event Player, Event Player.Q, Global.A[Event Player.A + 1], 0);
+			Set Status(Event Player, Null, Rooted, 9999);
+			Cancel Primary Action(Event Player);
+			Apply Impulse(Event Player, Velocity Of(Event Player), -0.010, To World, Cancel Contrary Motion);
+			Teleport(Event Player, Global.A[Event Player.A]);
+		Else;
+			Stop Camera(Event Player);
+			Clear Status(Event Player, Rooted);
+			Set Primary Fire Enabled(Event Player, True);
+		End;
+		Wait(0.016, Ignore Condition);
+		Loop If Condition Is True;
+	}
+}
+
+disabled rule("----------------------------------------------------겐지파쿠르-----------------------------------------------------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+rule("겐지파쿠르 설정")
+{
+	event
+	{
+		Subroutine;
+		genjiparkour;
+	}
+
+	action
+	{
+		"↓맵 코드를 적어주세요↓"
+		Global.BH = Custom String("");
+		Create HUD Text(Local Player, Null, Custom String("수정일 : 4.13"), Null, Left, -99, Color(White), Color(White), Color(White),
+			Visible To, Default Visibility);
+		Skip If(Global.BH == Custom String(""), 1);
+		Create HUD Text(Local Player, Null, Null, Custom String("맵 코드 : {0}", Global.BH), Left, -14, Color(White), Color(White), Color(
+			Aqua), Visible To, Default Visibility);
+		Create HUD Text(Local Player, Null, Null, Custom String(" "), Left, 10.500, Color(White), Color(White), Color(White), Visible To,
+			Default Visibility);
+		Create HUD Text(Local Player.AC ? Local Player : Null, Custom String("연습모드"), Null, Null, Left, 11, Color(White), Color(White),
+			Color(White), Visible To, Default Visibility);
+		If(Custom String("{0}", Hero(겐지)) == Custom String("겐지"));
+			Global.Z = 1;
+			"한국"
+			Global.AR = Array(Custom String("벽타기"), Custom String("콩콩이"), Custom String("벽타기 사용"), Custom String("콩콩이 사용"), Custom String(
+				"앉콩"), Custom String("연습모드 / 일반모드              "), Custom String("연습모드"), Custom String("일반모드"), Custom String("삼단점프 금지됨"),
+				Custom String("벽캔 금지됨"), Custom String("앉콩 금지됨"), Custom String("감정표현 금지됨"), Custom String("벽타기 금지됨"), Custom String(
+				"콩콩이 금지됨"));
+		Else If(Custom String("{0}", Hero(겐지)) == Custom String("源氏"));
+			Global.Z = 2;
+			"중국"
+			Global.AR = Array(Custom String("爬墙"), Custom String("小跳"), Custom String("爬墙已用"), Custom String("小跳已用"), Custom String("success"),
+				Custom String("无敌探点                "), Custom String("invincible mode"), Custom String("normal mode"), Custom String(
+				"Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String("Add Bhop is Disabled"), Custom String(
+				"Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String("Bhop is Disabled"));
+		Else If(Custom String("{0}", Hero(겐지)) == Custom String("ゲンジ"));
+			Global.Z = 3;
+			"일본"
+			Global.AR = Array(Custom String("climb"), Custom String("bhop"), Custom String("use climb"), Custom String("use bhop"),
+				Custom String("success"), Custom String("invincible / normal                "), Custom String("invincible mode"),
+				Custom String("normal mode"), Custom String("Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String(
+				"Add Bhop is Disabled"), Custom String("Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String(
+				"Bhop is Disabled"));
+		Else;
+			Global.AR = Array(Custom String("climb"), Custom String("bhop"), Custom String("use climb"), Custom String("use bhop"),
+				Custom String("success"), Custom String("invincible / normal                "), Custom String("invincible mode"),
+				Custom String("normal mode"), Custom String("Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String(
+				"Add Bhop is Disabled"), Custom String("Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String(
+				"Bhop is Disabled"));
+		End;
+		Global.BD = Empty Array;
+		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("벽타기(Climb)"), True, 2));
+			Modify Global Variable(BD, Append To Array, Custom String("벽타기"));
+		End;
+		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("콩콩이(Bhop)"), True, 3));
+			Modify Global Variable(BD, Append To Array, Custom String("콩콩이"));
+		End;
+		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("삼단점프(triple jump)"), True, 4));
+			Modify Global Variable(BD, Append To Array, Custom String("삼단점프"));
+		End;
+		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("감정표현(emote)"), True, 5));
+			Modify Global Variable(BD, Append To Array, Custom String("감정표현"));
+		End;
+		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("벽캔(multiclimb)"), True, 6));
+			Modify Global Variable(BD, Append To Array, Custom String("벽캔"));
+		End;
+		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("앉콩(add bhop)"), True, 7));
+			Modify Global Variable(BD, Append To Array, Custom String("앉콩"));
+		End;
+		Skip If(!(Global.BD && Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("금지된 스킬 표시(show banned skills)"),
+			True, 6)), 1);
+		Create HUD Text(Local Player, Null, Null, Custom String("금지된 기술 : {0}", True ? Custom String("{0}{1}", Global.BD,
+			Global.BD[1] ? Custom String(", {0}{1}", Global.BD[1], Global.BD[2] ? Custom String(", {0}{1}", Global.BD[2],
+			Global.BD[3] ? Custom String(", {0}{1}", Global.BD[3], Global.BD[4] ? Custom String(", {0}{1}", Global.BD[4],
+			Global.BD[5] ? Custom String(", {0}", Global.BD[5]) : Custom String("")) : Custom String("")) : Custom String(""))
+			: Custom String("")) : Custom String("")) : 0), Top, -2, Color(White), Color(White), Color(White), Visible To,
+			Default Visibility);
+		Global.BB = Array(Color(White), Color(Yellow), Color(Green), Color(Purple), Color(Red), Color(Blue), Color(Aqua), Color(Orange),
+			Color(Sky Blue), Color(Turquoise), Color(Lime Green), Color(Black), Color(Rose), Color(Violet), Color(Gray));
+		Global.AY = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+			"도착 시 강제로 재위치(forcing quick reset when you reach cp)"), True, 1);
+		Global.AS = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("연습모드(Invincible mode)"), True, 0);
+		Global.BF = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("울타리 부수기(break fences)"), True, 8);
+		Global.BC = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("자동 투명화(Auto Invisible)"), True, 9);
+		Global.AZ = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("현재 개척지 색(current checkpoint color)"),
+			5, Array(Custom String("white"), Custom String("yellow"), Custom String("green"), Custom String("pruple"), Custom String(
+			"red"), Custom String("blue"), Custom String("auqa"), Custom String("orange"), Custom String("sky blue"), Custom String(
+			"turquoise"), Custom String("lime green"), Custom String("black"), Custom String("rose"), Custom String("violet"),
+			Custom String("gray")), 10);
+		Global.BA = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("다음 개척지 색(next checkpoint ring color)"),
+			3, Array(Custom String("white"), Custom String("yellow"), Custom String("green"), Custom String("pruple"), Custom String(
+			"red"), Custom String("blue"), Custom String("auqa"), Custom String("orange"), Custom String("sky blue"), Custom String(
+			"turquoise"), Custom String("lime green"), Custom String("black"), Custom String("rose"), Custom String("violet"),
+			Custom String("gray")), 11);
+		Global.BG = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+			"다음 개척지 기둥 색(next checkpoint lightshaft color)"), 0, Array(Custom String("None"), Custom String("white"), Custom String(
+			"yellow"), Custom String("green"), Custom String("pruple"), Custom String("red"), Custom String("blue"), Custom String("auqa"),
+			Custom String("orange"), Custom String("sky blue"), Custom String("turquoise"), Custom String("lime green"), Custom String(
+			"black"), Custom String("rose"), Custom String("violet"), Custom String("gray")), 12);
+		Global.BK = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+			"다다음 개척지 표시 색(checkpoint color after next Cp)"), 0, Array(Custom String("None"), Custom String("white"), Custom String(
+			"yellow"), Custom String("green"), Custom String("pruple"), Custom String("red"), Custom String("blue"), Custom String("auqa"),
+			Custom String("orange"), Custom String("sky blue"), Custom String("turquoise"), Custom String("lime green"), Custom String(
+			"black"), Custom String("rose"), Custom String("violet"), Custom String("gray")), 13);
+		Global.BJ = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("타이머 설정(Timer Setting)"), 0, Array(
+			Custom String("1;23 (min;sec)"), Custom String("12.34 (sec)")), 14);
+		Global.AT = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("콩콩이 표시(bhop box)"), True, 2);
+		Global.AU = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("콩콩이 텍스트(bhop small message)"), True, 4);
+		Global.AV = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("벽타기 표시(climb box)"), True, 1);
+		Global.AW = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("벽타기 텍스트(climb small message)"), True, 3);
+		Global.AX = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("앉콩 텍스트(addbhop small message)"), True, 5);
+		If(Global.AS);
+			Create HUD Text(Local Player, Null, Null, Custom String("{0}+{1}: {2}", Input Binding String(Button(Interact)),
+				Input Binding String(Button(Melee)), Global.AR[5]), Right, -2, Color(White), Color(White), Color(Blue), Visible To and String,
+				Default Visibility);
+		End;
+		If(Global.BF);
+			Skip If(Global.A && !Global.AA, 1);
+			Call Subroutine(DvaPos);
+			Global.BI = 1;
+	}
+}
+
+rule("연습모드")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		(Is Button Held(Event Player, Button(Melee)) && Is Button Held(Event Player, Button(Interact))) == True;
+		Event Player.AI == True;
+		Global.AS == True;
+	}
+
+	action
+	{
+		If(Event Player.AC == False);
+			Skip If(!Global.S, 1);
+			Chase Player Variable At Rate(Event Player, I, 100000000, 1, Destination and Rate);
+			Chase Player Variable At Rate(Event Player, L, 100000000, 1, Destination and Rate);
+			Event Player.AC = True;
+			Event Player.AJ = Event Player.G;
+			Set Ability 1 Enabled(Event Player, True);
+			Big Message(Event Player, Global.AR[6]);
+			Set Ability Cooldown(Event Player, Button(Ability 1), 0);
+		Else If(Event Player.AC == True);
+			Skip If(!Global.S, 1);
+			Stop Chasing Player Variable(Event Player, I);
+			Stop Chasing Player Variable(Event Player, L);
+			Event Player.G = Event Player.AJ;
+			Big Message(Event Player, Global.AR[7]);
+			Event Player.AC = False;
+			Skip If(Global.O, 3);
+			Teleport(Event Player, Global.A[Event Player.A]);
+			Event Player.AE = True;
+			Call Subroutine(init);
+		End;
+	}
+}
+
+rule("연습모드 스킬 세팅")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.AC == True;
+		Is Using Ability 1(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.G = Event Player.G + 1;
+		Wait(0.500, Ignore Condition);
+		Skip If(!Event Player.AC, 2);
+		Set Ability Cooldown(Event Player, Button(Ability 1), 0);
+		Set Ability 1 Enabled(Event Player, True);
+	}
+}
+
+rule("연습모드 스킬 세팅 2")
+{
+	event
+	{
+		Player Died;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.AC == True;
+	}
+
+	action
+	{
+		Wait(0.250, Ignore Condition);
+		Set Ability 1 Enabled(Event Player, True);
+	}
+}
+
+rule("판단 | 점프")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		겐지;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Jump)) == True;
+		Event Player.AL != 2;
+	}
+
+	action
+	{
+		Event Player.AL += 1;
+	}
+}
+
+rule("판단 | 콩콩이")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.AL == 0;
+		Is In Air(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == False;
+	}
+
+	action
+	{
+		Event Player.AK = 0;
+	}
+}
+
+rule("판단 | 삼단점프 1")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.AL == 1;
+	}
+
+	action
+	{
+		Wait(0.100, Abort When False);
+		Event Player.AL = 2;
+	}
+}
+
+rule("판단 | 삼단점프 2")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		겐지;
+	}
+
+	condition
+	{
+		Event Player.AL == 0;
+		Is In Air(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.AL = 1;
+	}
+}
+
+rule("판단 | 벽타기")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Wall(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+		Has Spawned(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.AA = True;
+		Skip If(Event Player.AC, 1);
+		Event Player.AF += 1;
+		Event Player.AL = 2;
+		Skip If(Event Player.AF < 2, 3);
+		Event Player.AE = True;
+		Call Subroutine(init);
+		Skip(1);
+		If(Array Contains(Global.BD, Custom String("벽타기")));
+			Event Player.AE = True;
+			Call Subroutine(init);
+			Small Message(Event Player, Global.AR[12]);
+		Else If(Global.AW);
+			Small Message(Event Player, Global.AR[2]);
+	}
+}
+
+rule("판단 | 벽캔")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Wall(Event Player) == True;
+		Event Player.AA == False;
+		Has Spawned(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.AB += 1;
+	}
+}
+
+rule("판단 | 감정표현")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Communicating Any Emote(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.AK = 0;
+	}
+}
+
+rule("판단 | 앉콩")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Crouching(Event Player) == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is In Air(Event Player) == True;
+		Is On Wall(Event Player) == False;
+		Is Jumping(Event Player) == False;
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Is On Ground(Event Player) == False;
+	}
+
+	action
+	{
+		Event Player.AK = 0;
+		If(Array Contains(Global.BD, Custom String("앉콩")));
+			Event Player.AE = True;
+			Call Subroutine(init);
+			Small Message(Event Player, Global.AR[10]);
+		Else;
+			If(Global.AT);
+				Event Player.AP = Color(Green);
+			End;
+			If(Global.AX);
+				Small Message(Event Player, Global.AR[4]);
+			End;
+	}
+}
+
+rule("판단 | 착지")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == True;
+		Has Spawned(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.AB = 0;
+		Event Player.AA = False;
+		Skip If(!Event Player.AC && Distance Between(Position Of(Event Player), Global.A[Event Player.A]) > Global.N, 1);
+		Event Player.AL = 0;
+		Wait(0, Ignore Condition);
+		Loop If(Event Player.AL != 0 && Is On Ground(Event Player) == True);
+		Event Player.AK = 1;
+	}
+}
+
+rule("판단 | 땅버그")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == True;
+		disabled Distance Between(Event Player, Global.A[Event Player.A]) < Global.N;
+		disabled Distance Between(Event Player, Global.A[Event Player.A + 1]) < Global.N;
+		(Distance Between(Event Player, Global.A[Event Player.A]) < Global.N || Distance Between(Event Player,
+			Global.A[Event Player.A + 1]) < Global.N) == True;
+	}
+
+	action
+	{
+		Event Player.AF = 0;
+	}
+}
+
+rule("콩콩이 HUD 생성")
+{
+	event
+	{
+		Player Joined Match;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.AT == True;
+		Has Spawned(Event Player) == True;
+	}
+
+	action
+	{
+		Create HUD Text(Event Player, Global.AR[1], Null, Null, Left, 10, Event Player.AP, Color(White), Color(White), Color,
+			Default Visibility);
+	}
+}
+
+rule("콩콩이 가능")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Global.AT == True;
+		Is On Ground(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.AP = Color(Green);
+	}
+}
+
+rule("콩콩이 불가")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Jumping(Event Player) == True;
+		Global.AT == True;
+	}
+
+	action
+	{
+		Event Player.AP = Color(Red);
+		If(Event Player.AK == 0);
+			Event Player.AK = 1;
+			If(Array Contains(Global.BD, Custom String("콩콩이")));
+				Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+				Small Message(Event Player, Global.AR[13]);
+			Else If(Global.AU);
+				Small Message(Event Player, Global.AR[3]);
+	}
+}
+
+rule("벽타기 가능")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Has Spawned(Event Player) == True;
+		Global.AV == True;
+	}
+
+	action
+	{
+		Create HUD Text(!Event Player.AA ? Event Player : Null, Custom String("{0}{1}", Global.AR[0], Event Player.AB > 0 ? Custom String(
+			"({0})", Event Player.AB) : Custom String("")), Null, Null, Left, 9, Color(Green), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+	}
+}
+
+rule("벽타기 불가")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Global.AV == True;
+	}
+
+	action
+	{
+		Create HUD Text(Filtered Array(Event Player, Current Array Element.AA == True), Global.AR[0], Null, Null, Left, 9, Color(Red),
+			Color(White), Color(White), Visible To, Default Visibility);
+	}
+}
+
+rule("금지 | 삼단점프")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Vertical Speed Of(Event Player) >= 5.800;
+		Event Player.AL == 1;
+		Is Using Ability 1(Event Player) == False;
+		Array Contains(Global.BD, Custom String("삼단점프")) == True;
+	}
+
+	action
+	{
+		Abort If(Is On Wall(Event Player) == True);
+		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
+		Small Message(Event Player, Global.AR[8]);
+	}
+}
+
+rule("금지 | 감정표현")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Communicating Any Emote(Event Player) == True;
+		Array Contains(Global.BD, Custom String("감정표현")) == True;
+	}
+
+	action
+	{
+		Event Player.AE = True;
+		Call Subroutine(init);
+		Small Message(Event Player, Global.AR[11]);
+		Event Player.AK = 1;
+	}
+}
+
+rule("금지 | 벽캔")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.AB > 0;
+		Array Contains(Global.BD, Custom String("벽캔")) == True;
+	}
+
+	action
+	{
+		Event Player.AE = True;
+		Call Subroutine(init);
+		Small Message(Event Player, Global.AR[9]);
+	}
+}
+
+rule("디바 생성, 폭파")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	condition
+	{
+		Global.BI == 1;
+		Count Of(All Players(Team 1)) < 12;
+	}
+
+	action
+	{
+		Wait(3, Ignore Condition);
+		If(Global.AQ == 0);
+			Small Message(Host Player, Custom String("현재 이 맵은 울타리 부수기 설정이 되어있지 않습니다."));
+		Else;
+			Global.BI = 0;
+			While(Global.BI < Count Of(Global.AQ));
+				While(Number Of Players(Team 1) < 11 && Global.BI < Count Of(Global.AQ));
+					Create Dummy Bot(Hero(D.Va), Team 1, -1, Global.AQ[Global.BI], Up);
+					Global.BI += 1;
+				End;
+				Wait(1, Ignore Condition);
+				Set Ultimate Ability Enabled(Players On Hero(Hero(D.Va), Team 1), True);
+				Set Ultimate Charge(Players On Hero(Hero(D.Va), Team 1), 100);
+				Wait(0.250, Ignore Condition);
+				Start Holding Button(Players On Hero(Hero(D.Va), Team 1), Button(Ultimate));
+				Wait(3, Ignore Condition);
+				Destroy All Dummy Bots;
+			End;
+			Global.BI = -1;
+	}
+}
+
+rule("디바 자폭 위치")
+{
+	event
+	{
+		Subroutine;
+		DvaPos;
+	}
+
+	action
+	{
+		"\"리장 타워, 부산, 일리오스는 일단 보류 나머지 맵들부터 채워넣기\""
+		Disable Inspector Recording;
+		Global.BP = Custom String("{0}", Current Map);
+		If(Global.BP == Custom String("리알토"));
+			Global.AQ = Array(Vector(0.235, 6.949, -54.319), Vector(-4.961, 6.960, -70.946), Vector(-15.015, 6.947, -53.262), Vector(-14.369,
+				0.046, -67.571), Vector(52.320, 5.950, -33.687), Vector(62.242, 5.950, -39.633), Vector(66.693, 5.950, -25.967), Vector(78.625,
+				4.958, -13.893), Vector(78.368, 4.950, -25.307), Vector(84.183, 4.950, -32.765), Vector(91.160, 0.935, -25.304), Vector(90.277,
+				0.935, -16.372), Vector(103.726, 6.950, -33.435), Vector(112.225, 6.950, -11.564), Vector(99.743, 0.950, -47.350), Vector(
+				38.010, 6.950, -68.460), Vector(38.479, 6.950, -82.038), Vector(48.911, 6.950, -87.966), Vector(-2.172, 6.950, -42.113),
+				Vector(3.426, 4.950, -33.054), Vector(-44.746, 3.939, -89.839), Vector(-63.559, 3.950, -137.299), Vector(-49.755, 3.950,
+				-137.464), Vector(-28.269, 5.950, -82.012), Vector(-20.060, 2.634, -84.364), Vector(40.302, 6.950, -47.652), Vector(59.303,
+				6.950, -19.675));
+		Else If(Global.BP == Custom String("도라도"));
+			Global.AQ = Array(Vector(113.039, 18, 0.411), Vector(106.505, 18, -3.794), Vector(100.159, 20, 29.547), Vector(119.021, 18,
+				34.607), Vector(132.642, 16.697, 43.188), Vector(129.473, 12.012, 50.587), Vector(112.545, 11, 47.479), Vector(80.688, 20,
+				24.710), Vector(69.703, 17, 40.598), Vector(84.938, 14.302, 40.440), Vector(94.461, 14.292, 47.987), Vector(98.180, 18.012,
+				7.246), Vector(47.973, 9, 3.540), Vector(149.060, 15.849, 16.459), Vector(154.641, 11.970, 12.383), Vector(154.293, 14.012,
+				44.260), Vector(170.440, 18.012, 56.821), Vector(192.375, 18.012, 74.295), Vector(199.885, 15.012, 63.386), Vector(196.810,
+				13.464, 56.831), Vector(36.340, 4.009, -20.595), Vector(17.536, 4, -43.526), Vector(33.385, 2.002, -2.863), Vector(-6.540,
+				0.168, 12.159));
+		Else If(Global.BP == Custom String("할리우드"));
+		Else If(Global.BP == Custom String("하나무라"));
+		Else If(Global.BP == Custom String("리장 타워") || Global.BP == Custom String("리장 타워 (설날)"));
+		Else If(Global.BP == Custom String("블리자드 월드") || Global.BP == Custom String("블리자드 월드 (겨울)"));
+		Else If(Global.BP == Custom String("아이헨발데") || Global.BP == Custom String("아이헨발데 (할로윈)"));
+		Else If(Global.BP == Custom String("66번 국도"));
+			Global.AQ = Array(Vector(42.483, 3.584, 57.946), Vector(57.677, 3.584, 58.506), Vector(-22.613, 9.617, -19.764), Vector(-31.210,
+				9.632, -27.366), Vector(-37.461, 9.637, -16.753), Vector(-34.417, 9.641, -9.883), Vector(-76.174, 11.700, -5.487), Vector(
+				-68.563, 11.700, -18.563), Vector(-76.454, 10.829, -22.762), Vector(-105.328, 9.700, -18.601), Vector(55.524, 2.087, 25.894),
+				Vector(60.073, 3.578, 12.586), Vector(53.342, 3.499, 3.937), Vector(17.378, 3.295, -1.869), Vector(-10.735, 4.508, -19.790),
+				Vector(-21.166, 4.508, -34.818), Vector(-36.442, 4.508, -38.174), Vector(5.436, 3.294, -7.928), Vector(71.684, 1.128, 15.491),
+				Vector(62.374, 3.519, -0.998), Vector(39.788, 3.295, 8.521), Vector(28.680, 8.216, 22.142), Vector(8.608, 8.360, 16.467),
+				Vector(35.356, 6.629, -20.277));
+		Else If(Global.BP == Custom String("하바나"));
+		Else If(Global.BP == Custom String("눔바니"));
+		Else If(Global.BP == Custom String("파리"));
+		Else If(Global.BP == Custom String("일리오스"));
+		Else If(Global.BP == Custom String("볼스카야 인더스트리"));
+		Else If(Global.BP == Custom String("호라이즌 달 기지"));
+		Else If(Global.BP == Custom String("쓰레기촌"));
+		Else If(Global.BP == Custom String("부산"));
+		Else If(Global.BP == Custom String("오아시스"));
+	}
+}
+
+disabled rule("디바 위치 저장용")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+	}
+
+	action
+	{
+		Global.BL = Append To Array(Global.BL, Position Of(Event Player));
+		Small Message(All Players(All Teams), Custom String("위치 저장됨."));
+	}
+}
+
+disabled rule("타이머 바꾸기")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+		Is Button Held(Event Player, Button(Secondary Fire)) == True;
+	}
+
+	action
+	{
+		Event Player.AD = !Event Player.AD;
+	}
+}
+
+rule("플레이어 초기 설정")
+{
+	event
+	{
+		Player Joined Match;
+		All;
+		All;
+	}
+
+	action
+	{
+		Event Player.AI = True;
+		Skip If(Array Contains(Global.BM, Custom String("{0}", Event Player)) || Hero Of(Event Player) == Hero(D.Va), 1);
+		Modify Global Variable(BM, Append To Array, Custom String("{0}", Event Player));
+		Skip If(Global.O, 1);
+		Event Player.AC = True;
+	}
+}
+
+rule("플레이어 단계 로드")
+{
+	event
+	{
+		Player Joined Match;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Array Contains(Global.BM, Custom String("{0}", Event Player)) == True;
+		Has Spawned(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.B = Global.BN[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))];
+		Event Player.A = Global.BN[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))];
+		Event Player.L = Total Time Elapsed - Global.BO[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))];
+		Call Subroutine(init);
+	}
+}
+
+rule("test")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	action
+	{
+		disabled Create HUD Text(Event Player, Event Player.AF, Null, Null, Left, 0, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		disabled Create HUD Text(Event Player, Custom String("{0} / {1}", Global.BI, Count Of(Global.AQ)), Null, Null, Left, 0, Color(White), Color(
+			White), Color(White), Visible To and String, Default Visibility);
+	}
+}
