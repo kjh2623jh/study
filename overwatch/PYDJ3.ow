@@ -2,7 +2,7 @@ settings
 {
 	main
 	{
-		모드 이름: "겐지 개척 파쿠르"
+		모드 이름: "겐개파 수정중"
 		설명: "modified by 훈제김치                                                                                                            code : PYDJ3                                                                                                https://discord.gg/dyGvBbBgxV                                                          22.4.13"
 	}
 
@@ -27,9 +27,13 @@ settings
 
 		연습 전투
 		{
-			enabled maps
+			disabled maps
 			{
-				리알토
+				워크샵 개활지
+				워크샵 개활지 밤
+				워크샵 그린 스크린
+				워크샵 방
+				워크샵 섬
 			}
 		}
 
@@ -103,6 +107,8 @@ settings
 	{
 		개척 최소 거리minimum distance between check points: 7.000
 		개척지 크기size of check point: 1.500
+		도착 시 강제로 재위치forcing quick reset when you reach cp: 비활성화
+		자동 투명화Auto Invisible: 비활성화
 		저장 방법 설명how to save: 비활성화
 	}
 }
@@ -126,49 +132,49 @@ variables
 		39: AN
 		40: AO
 		41: AP
-		42: AQ
-		43: AR
-		44: AS
-		45: AT
-		46: AU
-		47: AV
-		48: AW
-		49: AX
-		50: AY
-		51: AZ
-		52: BA
-		53: BB
-		54: BC
-		55: BD
-		56: BF
-		57: BG
-		58: BH
-		59: BI
-		68: BJ
-		69: BK
-		70: BL
-		71: BM
-		72: BN
-		73: BO
-		75: BP
+		42: DvaPos
+		43: text
+		44: invincible
+		45: bhop
+		46: bhoptext
+		47: climb
+		48: climbtext
+		49: createbhoptext
+		50: forcingqreset
+		51: currentCpColor
+		52: nextCpRingColor
+		53: ColorList
+		54: auto_invisible
+		55: bannedSkills
+		56: BreakFences
+		57: nextCpLightShaftColor
+		58: MapCode
+		59: dvacnt
+		68: timerSetting
+		69: next2CpTextColor
+		70: dvaposSaver
+		71: playerList
+		72: playerLevel
+		73: playerTime
+		75: MapName
 
 	player:
-		26: AA
-		27: AB
-		28: AC
-		29: AD
-		30: AE
-		31: AF
-		32: AG
-		33: AH
-		34: AI
-		35: AJ
-		36: AK
-		37: AL
-		38: AM
-		39: AN
-		40: AO
-		85: AP
+		26: climbCheck
+		27: multiclimbCheck
+		28: isInvincible
+		29: Time
+		30: isforcingqreset
+		31: climbCnt
+		32: texttemp
+		33: playerlisttemp
+		34: isInvinciblePossible
+		35: save_skill
+		36: bhopCheck
+		37: check
+		38: playerleveltemp
+		39: playertimetemp
+		40: Dvapostemp
+		85: bhopColor
 }
 
 subroutines
@@ -494,7 +500,7 @@ rule("서버부하방지용2")
 			Visible To and String, Default Visibility);
 		If(Custom String("{0}", Hero(겐지)) == Custom String("겐지"));
 			Create HUD Text(Filtered Array(Local Player, Global.A), Custom String("{0}{1}{2}", Custom String("현재 단계: {0}/{1}{2}",
-				Local Player.A + 1, Count Of(Global.A), Global.X && !Local Player.K ? (Global.BJ ? Custom String(" {0}",
+				Local Player.A + 1, Count Of(Global.A), Global.X && !Local Player.K ? (Global.timerSetting ? Custom String(" {0}",
 				Total Time Elapsed - Local Player.L) : Custom String(" {0}:{1}", Round To Integer((Total Time Elapsed - Local Player.L) / 60,
 				Down), Round To Integer((Total Time Elapsed - Local Player.L) % 60, Down))) : Global.AO),
 				!Global.T ? Global.AO : Custom String("\r\n {0}", Custom String("{0}{1}", Ability Icon String(Hero Of(Local Player), Button(
@@ -592,21 +598,22 @@ rule("접속시")
 		If(Current Game Mode != Game Mode(연습 전투));
 			Disable Game Mode HUD(Event Player);
 		End;
-		Create Effect(Event Player, Ring, Global.BB[Global.AZ], Global.A[Event Player.A], Global.N, Visible To Position and Radius);
-		Create Effect(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Ring, Global.BB[Global.BA], Global.A[Event Player.A + 1],
-			Global.N, Visible To Position and Radius);
-		Skip If(!Global.BG, 1);
-		Create Effect(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Light Shaft, Global.BB[Global.BG + -1],
+		Create Effect(Event Player, Ring, Global.ColorList[Global.currentCpColor], Global.A[Event Player.A], Global.N,
+			Visible To Position and Radius);
+		Create Effect(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Ring, Global.ColorList[Global.nextCpRingColor],
 			Global.A[Event Player.A + 1], Global.N, Visible To Position and Radius);
+		Skip If(!Global.nextCpLightShaftColor, 1);
+		Create Effect(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Light Shaft,
+			Global.ColorList[Global.nextCpLightShaftColor + -1], Global.A[Event Player.A + 1], Global.N, Visible To Position and Radius);
 		Create In-World Text(Filtered Array(Event Player, Global.A[Event Player.A + 1]), Global.AE ? Global.Y[37] : Custom String("{0}{1}",
 			Global.Y[14], Global.L[Event Player.A + 1]), Global.A[Event Player.A + 1], 2, Do Not Clip, Visible To Position and String,
-			Global.BB[Global.BA], Default Visibility);
-		Skip If(!Global.BK, 1);
+			Global.ColorList[Global.nextCpRingColor], Default Visibility);
+		Skip If(!Global.next2CpTextColor, 1);
 		Create In-World Text(Filtered Array(Event Player, Global.A[Event Player.A + 2]), Custom String("다음"), Global.A[Event Player.A + 2],
-			2, Do Not Clip, Visible To Position and String, Global.BB[Global.BK + -1], Default Visibility);
+			2, Do Not Clip, Visible To Position and String, Global.ColorList[Global.next2CpTextColor + -1], Default Visibility);
 		Create Icon(Filtered Array(Event Player, !(Event Player.C || Event Player.Q) && Global.A[Event Player.A + 1] && !Is In View Angle(
 			Event Player, Global.A[Event Player.A + 1], 60)), Global.A[Event Player.A + 1], Flag, Visible To and Position,
-			Global.BB[Global.BA], True);
+			Global.ColorList[Global.nextCpRingColor], True);
 		If(Global.AI != 1);
 			Start Scaling Player(Event Player, Global.AI, False);
 		End;
@@ -648,7 +655,7 @@ rule("시작지점설정")
 			Create HUD Text(All Players(All Teams), Null, Custom String("{1}{0}{2}", Global.F, Global.Y[16], Global.Y[17]), Null, Right, -10,
 				Color(White), Color(Green), Color(White), Visible To and String, Default Visibility);
 		End;
-		Global.E.AC = False;
+		Global.E.isInvincible = False;
 	}
 }
 
@@ -670,11 +677,11 @@ rule("출발지점으로")
 
 	action
 	{
-		Event Player.AC = False;
-		Event Player.AE = True;
+		Event Player.isInvincible = False;
+		Event Player.isforcingqreset = True;
 		Start Rule(init, Restart Rule);
 		Wait(0.050, Ignore Condition);
-		If(Global.AY);
+		If(Global.forcingqreset);
 			Set Facing(Event Player, Direction Towards(Global.A[Event Player.A], Global.A[Event Player.A + 1]), To World);
 	}
 }
@@ -691,9 +698,9 @@ rule("제자리로")
 	{
 		If(Hero Of(Event Player) == Hero(겐지));
 			Skip If(!Global.A[Event Player.A], 2);
-			If(Event Player == Global.E || Event Player.AE);
-				If(Global.AY == False);
-					Event Player.AE = False;
+			If(Event Player == Global.E || Event Player.isforcingqreset);
+				If(Global.forcingqreset == False);
+					Event Player.isforcingqreset = False;
 				End;
 				Teleport(Event Player, Global.A[Event Player.A]);
 				Start Forcing Player Position(Event Player, Global.A[Event Player.A], False);
@@ -701,6 +708,7 @@ rule("제자리로")
 				Set Status(Event Player, Null, Rooted, 0.500);
 				Cancel Primary Action(Event Player);
 			End;
+			Event Player.climbCnt = 0;
 			Wait(0.050, Ignore Condition);
 			Event Player.F = Global.B[Event Player.A];
 			Event Player.G = Global.C[Event Player.A];
@@ -735,7 +743,8 @@ rule("제자리로")
 			Set Ability Cooldown(Event Player, Button(Ability 2), 0);
 			Event Player.S = False;
 			Set Gravity(Event Player, 100);
-			Global.BO[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))] = Total Time Elapsed - Event Player.L;
+			Global.playerTime[Index Of Array Value(Global.playerList, Custom String("{0}", Event Player))
+				] = Total Time Elapsed - Event Player.L;
 	}
 }
 
@@ -762,7 +771,7 @@ rule("부활")
 			Global.D[Event Player.A] = 0;
 			Global.I[Event Player.A] = 0;
 		End;
-		Event Player.AE = True;
+		Event Player.isforcingqreset = True;
 		Call Subroutine(init);
 		Resurrect(Event Player);
 		Clear Status(Event Player, Phased Out);
@@ -789,7 +798,7 @@ rule("다시하기")
 			Eye Position(Event Player), Current Array Element) < 1))) == True;
 		Global.W == False;
 		Has Status(Event Player, Rooted) == False;
-		Event Player.AC == False;
+		Event Player.isInvincible == False;
 	}
 
 	action
@@ -809,7 +818,7 @@ rule("다시하기")
 		Set Ability 2 Enabled(Event Player, True);
 		Allow Button(Event Player, Button(Crouch));
 		Global.W = False;
-		If(Global.AY);
+		If(Global.forcingqreset);
 			Set Facing(Event Player, Event Player.O, To World);
 		End;
 		Event Player.P = False;
@@ -828,7 +837,7 @@ rule("중간취소")
 	condition
 	{
 		Is Button Held(Event Player, Button(Ultimate)) == True;
-		Event Player.AC != True;
+		Event Player.isInvincible != True;
 		Global.A == True;
 		(Event Player == Global.E && Global.W) == False;
 		Is Button Held(Event Player, Button(Crouch)) == False;
@@ -837,7 +846,7 @@ rule("중간취소")
 
 	action
 	{
-		Event Player.AK = 1;
+		Event Player.bhopCheck = 1;
 		If(Event Player == Host Player && Global.X && !Global.E && Is Button Held(Event Player, Button(Interact)));
 			Event Player.A = Count Of(Global.A) - 2;
 			Event Player.B = Event Player.A;
@@ -854,13 +863,13 @@ rule("중간취소")
 				Global.D[Event Player.A] = 0;
 				Global.I[Event Player.A] = 0;
 			End;
-			Event Player.AE = True;
+			Event Player.isforcingqreset = True;
 			Start Rule(init, Restart Rule);
 			Wait(0.100, Ignore Condition);
 			Skip If(Event Player != Global.E, 1);
 			Global.W = False;
 			Skip If(!Global.A[Event Player.A + 1], 1);
-			If(Global.AY);
+			If(Global.forcingqreset);
 				Set Facing(Event Player, Event Player.O, To World);
 			End;
 			Event Player.P = False;
@@ -906,7 +915,7 @@ rule("개척시간")
 	{
 		Global.S == True;
 		Is On Ground(Event Player) == False;
-		Event Player.AC == False;
+		Event Player.isInvincible == False;
 	}
 
 	action
@@ -963,17 +972,17 @@ rule("땅에닿으면 죽음")
 		Event Player.M == False;
 		Event Player.S == False;
 		Event Player.X == False;
-		Event Player.AC == False;
+		Event Player.isInvincible == False;
 	}
 
 	action
 	{
 		Event Player.P = True;
 		Play Effect(Event Player, Debuff Impact Sound, Color(White), Event Player, 50);
-		Event Player.AE = True;
+		Event Player.isforcingqreset = True;
 		Call Subroutine(init);
 		Wait(0.150, Ignore Condition);
-		If(Global.AY);
+		If(Global.forcingqreset);
 			Set Facing(Event Player, Event Player.O, To World);
 		End;
 		Event Player.P = False;
@@ -1001,7 +1010,7 @@ rule("도착")
 		Distance Between(Position Of(Event Player), Global.A[Event Player.A + 1]) < Global.N;
 		Event Player.S == False;
 		Event Player.Y == False;
-		Event Player.AC == False;
+		Event Player.isInvincible == False;
 	}
 
 	action
@@ -1017,7 +1026,7 @@ rule("도착")
 		Global.J = False;
 		If(Event Player.A - Event Player.B == 1);
 			Modify Player Variable(Event Player, B, Max, Event Player.A);
-			Global.BN[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))] = Event Player.B;
+			Global.playerLevel[Index Of Array Value(Global.playerList, Custom String("{0}", Event Player))] = Event Player.B;
 		End;
 		If(Event Player != Global.J && !Global.X && !Global.E && Count Of(Global.A) - 1 == Event Player.A);
 			Set Match Time(Global.AK);
@@ -1037,7 +1046,7 @@ rule("도착")
 		If(Event Player.A != Count Of(Global.A) - 1);
 			Event Player.O = Direction Towards(Global.A[Event Player.A], Global.A[Event Player.A + 1]);
 			Wait(0.150, Ignore Condition);
-			If(Global.AY);
+			If(Global.forcingqreset);
 				Set Facing(Event Player, Event Player.O, To World);
 			End;
 		End;
@@ -1064,13 +1073,13 @@ rule("개척")
 		Global.W == False;
 		(Global.V && Is True For Any(Global.V, Distance Between(Eye Position(Event Player), Current Array Element) <= 1)) == False;
 		" "
-		Event Player.AC == False;
+		Event Player.isInvincible == False;
 		disabled Is Button Held(Host Player, Button(Melee)) == True;
 	}
 
 	action
 	{
-		Event Player.AE = True;
+		Event Player.isforcingqreset = True;
 		Global.W = True;
 		Global.U = Position Of(Event Player);
 		Global.AM = Mapped Array(Global.AM, Distance Between(Global.U, Ray Cast Hit Position(Global.U, Global.U + Direction From Angles(
@@ -1309,8 +1318,8 @@ rule("단계이동")
 
 	action
 	{
-		Event Player.AE = True;
-		Event Player.AC = False;
+		Event Player.isforcingqreset = True;
+		Event Player.isInvincible = False;
 		Skip If(!Global.S, 1);
 		Stop Chasing Player Variable(Event Player, I);
 		Stop Chasing Player Variable(Event Player, L);
@@ -1576,8 +1585,8 @@ rule("투명화")
 	{
 		Global.A == True;
 		Is Hero Being Played(Hero(레킹볼), All Teams) == False;
-		(Event Player.U || Event Player == Global.E || (Global.BC ? Distance Between(Event Player, Closest Player To(Event Player,
-			All Teams)) < 2 : False)) != Event Player.W;
+		(Event Player.U || Event Player == Global.E || (Global.auto_invisible ? Distance Between(Event Player, Closest Player To(
+			Event Player, All Teams)) < 2 : False)) != Event Player.W;
 	}
 
 	action
@@ -1645,32 +1654,32 @@ rule("인스펙터저장")
 		Global.Y = 0;
 		Host Player.Z = Global.AP;
 		Global.AP = 0;
-		Host Player.AG = Global.AR;
-		Global.AR = 0;
-		Host Player.AH = Global.BM;
-		Global.BM = 0;
-		Host Player.AM = Global.BN;
-		Global.BN = 0;
-		Host Player.AN = Global.BO;
-		Global.BO = 0;
-		Host Player.AO = Global.AQ;
-		Global.AQ = 0;
+		Host Player.texttemp = Global.text;
+		Global.text = 0;
+		Host Player.playerlisttemp = Global.playerList;
+		Global.playerList = 0;
+		Host Player.playerleveltemp = Global.playerLevel;
+		Global.playerLevel = 0;
+		Host Player.playertimetemp = Global.playerTime;
+		Global.playerTime = 0;
+		Host Player.Dvapostemp = Global.DvaPos;
+		Global.DvaPos = 0;
 		Enable Inspector Recording;
 		Disable Inspector Recording;
 		Global.Y = Host Player.V;
 		Host Player.V = 0;
 		Global.AP = Host Player.Z;
 		Host Player.Z = 0;
-		Global.AR = Host Player.AG;
-		Host Player.AG = 0;
-		Global.BM = Host Player.AH;
-		Host Player.AH = 0;
-		Global.BN = Host Player.AM;
-		Host Player.AM = 0;
-		Global.BO = Host Player.AN;
-		Host Player.AN = 0;
-		Global.AQ = Host Player.AO;
-		Host Player.AO = 0;
+		Global.text = Host Player.texttemp;
+		Host Player.texttemp = 0;
+		Global.playerList = Host Player.playerlisttemp;
+		Host Player.playerlisttemp = 0;
+		Global.playerLevel = Host Player.playerleveltemp;
+		Host Player.playerleveltemp = 0;
+		Global.playerTime = Host Player.playertimetemp;
+		Host Player.playertimetemp = 0;
+		Global.DvaPos = Host Player.Dvapostemp;
+		Host Player.Dvapostemp = 0;
 	}
 }
 
@@ -1723,8 +1732,8 @@ rule("관전")
 			Event Player.E = True;
 			Wait(0.100, Ignore Condition);
 			Press Button(Event Player, Button(Jump));
-			Event Player.AI = False;
-			Event Player.AC = False;
+			Event Player.isInvinciblePossible = False;
+			Event Player.isInvincible = False;
 		Else;
 			Enable Built-In Game Mode Respawning(Event Player);
 			Skip If(!Global.S, 1);
@@ -1733,9 +1742,9 @@ rule("관전")
 			Resurrect(Event Player);
 			Clear Status(Event Player, Phased Out);
 			Set Status(Event Player, Null, Phased Out, 9999);
-			Event Player.AE = True;
+			Event Player.isforcingqreset = True;
 			Call Subroutine(init);
-			Event Player.AI = True;
+			Event Player.isInvinciblePossible = True;
 		End;
 		Wait(0.400, Ignore Condition);
 	}
@@ -1769,12 +1778,12 @@ rule("클리어")
 		Modify Global Variable(AC, Remove From Array By Index, Index Of Array Value(Global.AC, Event Player.R));
 		Modify Global Variable(AB, Append To Array, Event Player.N);
 		Modify Global Variable(AC, Append To Array, Event Player.R);
-		Modify Global Variable(AD, Append To Array, Global.BJ ? Event Player.N : Custom String("{0}:{1}", Round To Integer(
+		Modify Global Variable(AD, Append To Array, Global.timerSetting ? Event Player.N : Custom String("{0}:{1}", Round To Integer(
 			Event Player.N / 60, Down), Round To Integer(Event Player.N % 60, Down)));
 		Skip(2);
 		Skip If(Global.AB[Index Of Array Value(Global.AC, Event Player.R)] > Total Time Elapsed - Event Player.L, 1);
 		Event Player.N = Global.AB[Index Of Array Value(Global.AC, Event Player.R)];
-		Event Player.K = Custom String("{0} {1}", Global.BJ ? Event Player.N : Custom String("{0}:{1}", Round To Integer(
+		Event Player.K = Custom String("{0} {1}", Global.timerSetting ? Event Player.N : Custom String("{0}:{1}", Round To Integer(
 			Event Player.N / 60, Down), Round To Integer(Event Player.N % 60, Down)), Global.Y[28]);
 	}
 }
@@ -1797,7 +1806,7 @@ rule("다시시작")
 
 	action
 	{
-		Event Player.AC = False;
+		Event Player.isInvincible = False;
 		Skip If(!Global.S, 1);
 		Stop Chasing Player Variable(Event Player, I);
 		Stop Chasing Player Variable(Event Player, L);
@@ -1805,7 +1814,7 @@ rule("다시시작")
 		Event Player.K = False;
 		Event Player.A = 0;
 		Event Player.B = 0;
-		Event Player.AE = True;
+		Event Player.isforcingqreset = True;
 		Start Rule(init, Restart Rule);
 		Wait(0.100, Ignore Condition);
 		Event Player.M = False;
@@ -1848,7 +1857,7 @@ rule("다음위치보기")
 	{
 		(!Global.W && Is On Ground(Event Player) && Event Player != Global.M && Global.A[Event Player.A + 1] && Is Button Held(
 			Event Player, Button(Primary Fire))) != Event Player.Q;
-		Event Player.AC == False;
+		Event Player.isInvincible == False;
 	}
 
 	action
@@ -1891,115 +1900,121 @@ rule("겐지파쿠르 설정")
 	action
 	{
 		"↓맵 코드를 적어주세요↓"
-		Global.BH = Custom String("");
+		Global.MapCode = Custom String("");
 		Create HUD Text(Local Player, Null, Custom String("수정일 : 4.13"), Null, Left, -99, Color(White), Color(White), Color(White),
 			Visible To, Default Visibility);
-		Skip If(Global.BH == Custom String(""), 1);
-		Create HUD Text(Local Player, Null, Null, Custom String("맵 코드 : {0}", Global.BH), Left, -14, Color(White), Color(White), Color(
-			Aqua), Visible To, Default Visibility);
+		Skip If(Global.MapCode == Custom String(""), 1);
+		Create HUD Text(Local Player, Null, Null, Custom String("맵 코드 : {0}", Global.MapCode), Left, -14, Color(White), Color(White),
+			Color(Aqua), Visible To, Default Visibility);
 		Create HUD Text(Local Player, Null, Null, Custom String(" "), Left, 10.500, Color(White), Color(White), Color(White), Visible To,
 			Default Visibility);
-		Create HUD Text(Local Player.AC ? Local Player : Null, Custom String("연습모드"), Null, Null, Left, 11, Color(White), Color(White),
-			Color(White), Visible To, Default Visibility);
+		Create HUD Text(Local Player.isInvincible ? Local Player : Null, Custom String("연습모드"), Null, Null, Left, 11, Color(White), Color(
+			White), Color(White), Visible To, Default Visibility);
 		If(Custom String("{0}", Hero(겐지)) == Custom String("겐지"));
 			Global.Z = 1;
 			"한국"
-			Global.AR = Array(Custom String("벽타기"), Custom String("콩콩이"), Custom String("벽타기 사용"), Custom String("콩콩이 사용"), Custom String(
+			Global.text = Array(Custom String("벽타기"), Custom String("콩콩이"), Custom String("벽타기 사용"), Custom String("콩콩이 사용"), Custom String(
 				"앉콩"), Custom String("연습모드 / 일반모드              "), Custom String("연습모드"), Custom String("일반모드"), Custom String("삼단점프 금지됨"),
 				Custom String("벽캔 금지됨"), Custom String("앉콩 금지됨"), Custom String("감정표현 금지됨"), Custom String("벽타기 금지됨"), Custom String(
 				"콩콩이 금지됨"));
 		Else If(Custom String("{0}", Hero(겐지)) == Custom String("源氏"));
 			Global.Z = 2;
 			"중국"
-			Global.AR = Array(Custom String("爬墙"), Custom String("小跳"), Custom String("爬墙已用"), Custom String("小跳已用"), Custom String("success"),
-				Custom String("无敌探点                "), Custom String("invincible mode"), Custom String("normal mode"), Custom String(
-				"Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String("Add Bhop is Disabled"), Custom String(
-				"Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String("Bhop is Disabled"));
+			Global.text = Array(Custom String("爬墙"), Custom String("小跳"), Custom String("爬墙已用"), Custom String("小跳已用"), Custom String(
+				"success"), Custom String("无敌探点                "), Custom String("invincible mode"), Custom String("normal mode"),
+				Custom String("Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String("Add Bhop is Disabled"),
+				Custom String("Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String("Bhop is Disabled"));
 		Else If(Custom String("{0}", Hero(겐지)) == Custom String("ゲンジ"));
 			Global.Z = 3;
 			"일본"
-			Global.AR = Array(Custom String("climb"), Custom String("bhop"), Custom String("use climb"), Custom String("use bhop"),
+			Global.text = Array(Custom String("climb"), Custom String("bhop"), Custom String("use climb"), Custom String("use bhop"),
 				Custom String("success"), Custom String("invincible / normal                "), Custom String("invincible mode"),
 				Custom String("normal mode"), Custom String("Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String(
 				"Add Bhop is Disabled"), Custom String("Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String(
 				"Bhop is Disabled"));
 		Else;
-			Global.AR = Array(Custom String("climb"), Custom String("bhop"), Custom String("use climb"), Custom String("use bhop"),
+			Global.text = Array(Custom String("climb"), Custom String("bhop"), Custom String("use climb"), Custom String("use bhop"),
 				Custom String("success"), Custom String("invincible / normal                "), Custom String("invincible mode"),
 				Custom String("normal mode"), Custom String("Triple Jump is Disabled"), Custom String("Multiclimb is Disabled"), Custom String(
 				"Add Bhop is Disabled"), Custom String("Emote jumping is Disabled"), Custom String("Climb is Disabled"), Custom String(
 				"Bhop is Disabled"));
 		End;
-		Global.BD = Empty Array;
+		Global.bannedSkills = Empty Array;
 		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("벽타기(Climb)"), True, 2));
-			Modify Global Variable(BD, Append To Array, Custom String("벽타기"));
+			Modify Global Variable(bannedSkills, Append To Array, Custom String("벽타기"));
 		End;
 		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("콩콩이(Bhop)"), True, 3));
-			Modify Global Variable(BD, Append To Array, Custom String("콩콩이"));
+			Modify Global Variable(bannedSkills, Append To Array, Custom String("콩콩이"));
 		End;
 		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("삼단점프(triple jump)"), True, 4));
-			Modify Global Variable(BD, Append To Array, Custom String("삼단점프"));
+			Modify Global Variable(bannedSkills, Append To Array, Custom String("삼단점프"));
 		End;
 		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("감정표현(emote)"), True, 5));
-			Modify Global Variable(BD, Append To Array, Custom String("감정표현"));
+			Modify Global Variable(bannedSkills, Append To Array, Custom String("감정표현"));
 		End;
 		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("벽캔(multiclimb)"), True, 6));
-			Modify Global Variable(BD, Append To Array, Custom String("벽캔"));
+			Modify Global Variable(bannedSkills, Append To Array, Custom String("벽캔"));
 		End;
 		If(!Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("앉콩(add bhop)"), True, 7));
-			Modify Global Variable(BD, Append To Array, Custom String("앉콩"));
+			Modify Global Variable(bannedSkills, Append To Array, Custom String("앉콩"));
 		End;
-		Skip If(!(Global.BD && Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("금지된 스킬 표시(show banned skills)"),
-			True, 6)), 1);
-		Create HUD Text(Local Player, Null, Null, Custom String("금지된 기술 : {0}", True ? Custom String("{0}{1}", Global.BD,
-			Global.BD[1] ? Custom String(", {0}{1}", Global.BD[1], Global.BD[2] ? Custom String(", {0}{1}", Global.BD[2],
-			Global.BD[3] ? Custom String(", {0}{1}", Global.BD[3], Global.BD[4] ? Custom String(", {0}{1}", Global.BD[4],
-			Global.BD[5] ? Custom String(", {0}", Global.BD[5]) : Custom String("")) : Custom String("")) : Custom String(""))
-			: Custom String("")) : Custom String("")) : 0), Top, -2, Color(White), Color(White), Color(White), Visible To,
-			Default Visibility);
-		Global.BB = Array(Color(White), Color(Yellow), Color(Green), Color(Purple), Color(Red), Color(Blue), Color(Aqua), Color(Orange),
-			Color(Sky Blue), Color(Turquoise), Color(Lime Green), Color(Black), Color(Rose), Color(Violet), Color(Gray));
-		Global.AY = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+		Skip If(!(Global.bannedSkills && Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String(
+			"금지된 스킬 표시(show banned skills)"), True, 6)), 1);
+		Create HUD Text(Local Player, Null, Null, Custom String("금지된 기술 : {0}", True ? Custom String("{0}{1}", Global.bannedSkills,
+			Global.bannedSkills[1] ? Custom String(", {0}{1}", Global.bannedSkills[1], Global.bannedSkills[2] ? Custom String(", {0}{1}",
+			Global.bannedSkills[2], Global.bannedSkills[3] ? Custom String(", {0}{1}", Global.bannedSkills[3],
+			Global.bannedSkills[4] ? Custom String(", {0}{1}", Global.bannedSkills[4], Global.bannedSkills[5] ? Custom String(", {0}",
+			Global.bannedSkills[5]) : Custom String("")) : Custom String("")) : Custom String("")) : Custom String("")) : Custom String(
+			"")) : 0), Top, -2, Color(White), Color(White), Color(White), Visible To, Default Visibility);
+		Global.ColorList = Array(Color(White), Color(Yellow), Color(Green), Color(Purple), Color(Red), Color(Blue), Color(Aqua), Color(
+			Orange), Color(Sky Blue), Color(Turquoise), Color(Lime Green), Color(Black), Color(Rose), Color(Violet), Color(Gray));
+		Global.forcingqreset = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
 			"도착 시 강제로 재위치(forcing quick reset when you reach cp)"), True, 1);
-		Global.AS = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("연습모드(Invincible mode)"), True, 0);
-		Global.BF = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("울타리 부수기(break fences)"), True, 8);
-		Global.BC = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("자동 투명화(Auto Invisible)"), True, 9);
-		Global.AZ = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("현재 개척지 색(current checkpoint color)"),
-			5, Array(Custom String("white"), Custom String("yellow"), Custom String("green"), Custom String("pruple"), Custom String(
-			"red"), Custom String("blue"), Custom String("auqa"), Custom String("orange"), Custom String("sky blue"), Custom String(
-			"turquoise"), Custom String("lime green"), Custom String("black"), Custom String("rose"), Custom String("violet"),
-			Custom String("gray")), 10);
-		Global.BA = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("다음 개척지 색(next checkpoint ring color)"),
-			3, Array(Custom String("white"), Custom String("yellow"), Custom String("green"), Custom String("pruple"), Custom String(
-			"red"), Custom String("blue"), Custom String("auqa"), Custom String("orange"), Custom String("sky blue"), Custom String(
-			"turquoise"), Custom String("lime green"), Custom String("black"), Custom String("rose"), Custom String("violet"),
-			Custom String("gray")), 11);
-		Global.BG = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+		Global.invincible = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("연습모드(Invincible mode)"), True,
+			0);
+		Global.BreakFences = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("울타리 부수기(break fences)"),
+			True, 8);
+		Global.auto_invisible = Workshop Setting Toggle(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("자동 투명화(Auto Invisible)"),
+			True, 9);
+		Global.currentCpColor = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+			"현재 개척지 색(current checkpoint color)"), 5, Array(Custom String("white"), Custom String("yellow"), Custom String("green"),
+			Custom String("pruple"), Custom String("red"), Custom String("blue"), Custom String("auqa"), Custom String("orange"),
+			Custom String("sky blue"), Custom String("turquoise"), Custom String("lime green"), Custom String("black"), Custom String(
+			"rose"), Custom String("violet"), Custom String("gray")), 10);
+		Global.nextCpRingColor = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+			"다음 개척지 색(next checkpoint ring color)"), 3, Array(Custom String("white"), Custom String("yellow"), Custom String("green"),
+			Custom String("pruple"), Custom String("red"), Custom String("blue"), Custom String("auqa"), Custom String("orange"),
+			Custom String("sky blue"), Custom String("turquoise"), Custom String("lime green"), Custom String("black"), Custom String(
+			"rose"), Custom String("violet"), Custom String("gray")), 11);
+		Global.nextCpLightShaftColor = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
 			"다음 개척지 기둥 색(next checkpoint lightshaft color)"), 0, Array(Custom String("None"), Custom String("white"), Custom String(
 			"yellow"), Custom String("green"), Custom String("pruple"), Custom String("red"), Custom String("blue"), Custom String("auqa"),
 			Custom String("orange"), Custom String("sky blue"), Custom String("turquoise"), Custom String("lime green"), Custom String(
 			"black"), Custom String("rose"), Custom String("violet"), Custom String("gray")), 12);
-		Global.BK = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
+		Global.next2CpTextColor = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String(
 			"다다음 개척지 표시 색(checkpoint color after next Cp)"), 0, Array(Custom String("None"), Custom String("white"), Custom String(
 			"yellow"), Custom String("green"), Custom String("pruple"), Custom String("red"), Custom String("blue"), Custom String("auqa"),
 			Custom String("orange"), Custom String("sky blue"), Custom String("turquoise"), Custom String("lime green"), Custom String(
 			"black"), Custom String("rose"), Custom String("violet"), Custom String("gray")), 13);
-		Global.BJ = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("타이머 설정(Timer Setting)"), 0, Array(
-			Custom String("1;23 (min;sec)"), Custom String("12.34 (sec)")), 14);
-		Global.AT = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("콩콩이 표시(bhop box)"), True, 2);
-		Global.AU = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("콩콩이 텍스트(bhop small message)"), True, 4);
-		Global.AV = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("벽타기 표시(climb box)"), True, 1);
-		Global.AW = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("벽타기 텍스트(climb small message)"), True, 3);
-		Global.AX = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("앉콩 텍스트(addbhop small message)"), True, 5);
-		If(Global.AS);
+		Global.timerSetting = Workshop Setting Combo(Custom String("파쿠르 설정(Parkour Setting)"), Custom String("타이머 설정(Timer Setting)"), 0,
+			Array(Custom String("1;23 (min;sec)"), Custom String("12.34 (sec)")), 14);
+		Global.bhop = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("콩콩이 표시(bhop box)"), True, 2);
+		Global.bhoptext = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("콩콩이 텍스트(bhop small message)"), True,
+			4);
+		Global.climb = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("벽타기 표시(climb box)"), True, 1);
+		Global.climbtext = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("벽타기 텍스트(climb small message)"), True,
+			3);
+		Global.createbhoptext = Workshop Setting Toggle(Custom String("UI 설정(UI setting)"), Custom String("앉콩 텍스트(addbhop small message)"),
+			True, 5);
+		If(Global.invincible);
 			Create HUD Text(Local Player, Null, Null, Custom String("{0}+{1}: {2}", Input Binding String(Button(Interact)),
-				Input Binding String(Button(Melee)), Global.AR[5]), Right, -2, Color(White), Color(White), Color(Blue), Visible To and String,
-				Default Visibility);
+				Input Binding String(Button(Melee)), Global.text[5]), Right, -2, Color(White), Color(White), Color(Blue),
+				Visible To and String, Default Visibility);
 		End;
-		If(Global.BF);
+		If(Global.BreakFences);
 			Skip If(Global.A && !Global.AA, 1);
 			Call Subroutine(DvaPos);
-			Global.BI = 1;
+			Global.dvacnt = 1;
 	}
 }
 
@@ -2015,31 +2030,31 @@ rule("연습모드")
 	condition
 	{
 		(Is Button Held(Event Player, Button(Melee)) && Is Button Held(Event Player, Button(Interact))) == True;
-		Event Player.AI == True;
-		Global.AS == True;
+		Event Player.isInvinciblePossible == True;
+		Global.invincible == True;
 	}
 
 	action
 	{
-		If(Event Player.AC == False);
+		If(Event Player.isInvincible == False);
 			Skip If(!Global.S, 1);
 			Chase Player Variable At Rate(Event Player, I, 100000000, 1, Destination and Rate);
 			Chase Player Variable At Rate(Event Player, L, 100000000, 1, Destination and Rate);
-			Event Player.AC = True;
-			Event Player.AJ = Event Player.G;
+			Event Player.isInvincible = True;
+			Event Player.save_skill = Event Player.G;
 			Set Ability 1 Enabled(Event Player, True);
-			Big Message(Event Player, Global.AR[6]);
+			Big Message(Event Player, Global.text[6]);
 			Set Ability Cooldown(Event Player, Button(Ability 1), 0);
-		Else If(Event Player.AC == True);
+		Else If(Event Player.isInvincible == True);
 			Skip If(!Global.S, 1);
 			Stop Chasing Player Variable(Event Player, I);
 			Stop Chasing Player Variable(Event Player, L);
-			Event Player.G = Event Player.AJ;
-			Big Message(Event Player, Global.AR[7]);
-			Event Player.AC = False;
+			Event Player.G = Event Player.save_skill;
+			Big Message(Event Player, Global.text[7]);
+			Event Player.isInvincible = False;
 			Skip If(Global.O, 3);
 			Teleport(Event Player, Global.A[Event Player.A]);
-			Event Player.AE = True;
+			Event Player.isforcingqreset = True;
 			Call Subroutine(init);
 		End;
 	}
@@ -2056,7 +2071,7 @@ rule("연습모드 스킬 세팅")
 
 	condition
 	{
-		Event Player.AC == True;
+		Event Player.isInvincible == True;
 		Is Using Ability 1(Event Player) == True;
 	}
 
@@ -2064,7 +2079,7 @@ rule("연습모드 스킬 세팅")
 	{
 		Event Player.G = Event Player.G + 1;
 		Wait(0.500, Ignore Condition);
-		Skip If(!Event Player.AC, 2);
+		Skip If(!Event Player.isInvincible, 2);
 		Set Ability Cooldown(Event Player, Button(Ability 1), 0);
 		Set Ability 1 Enabled(Event Player, True);
 	}
@@ -2081,7 +2096,7 @@ rule("연습모드 스킬 세팅 2")
 
 	condition
 	{
-		Event Player.AC == True;
+		Event Player.isInvincible == True;
 	}
 
 	action
@@ -2103,12 +2118,12 @@ rule("판단 | 점프")
 	condition
 	{
 		Is Button Held(Event Player, Button(Jump)) == True;
-		Event Player.AL != 2;
+		Event Player.check != 2;
 	}
 
 	action
 	{
-		Event Player.AL += 1;
+		Event Player.check += 1;
 	}
 }
 
@@ -2123,14 +2138,14 @@ rule("판단 | 콩콩이")
 
 	condition
 	{
-		Event Player.AL == 0;
+		Event Player.check == 0;
 		Is In Air(Event Player) == True;
 		Is Button Held(Event Player, Button(Jump)) == False;
 	}
 
 	action
 	{
-		Event Player.AK = 0;
+		Event Player.bhopCheck = 0;
 	}
 }
 
@@ -2145,13 +2160,13 @@ rule("판단 | 삼단점프 1")
 
 	condition
 	{
-		Event Player.AL == 1;
+		Event Player.check == 1;
 	}
 
 	action
 	{
 		Wait(0.100, Abort When False);
-		Event Player.AL = 2;
+		Event Player.check = 2;
 	}
 }
 
@@ -2166,13 +2181,13 @@ rule("판단 | 삼단점프 2")
 
 	condition
 	{
-		Event Player.AL == 0;
+		Event Player.check == 0;
 		Is In Air(Event Player) == True;
 	}
 
 	action
 	{
-		Event Player.AL = 1;
+		Event Player.check = 1;
 	}
 }
 
@@ -2194,20 +2209,20 @@ rule("판단 | 벽타기")
 
 	action
 	{
-		Event Player.AA = True;
-		Skip If(Event Player.AC, 1);
-		Event Player.AF += 1;
-		Event Player.AL = 2;
-		Skip If(Event Player.AF < 2, 3);
-		Event Player.AE = True;
+		Event Player.climbCheck = True;
+		Skip If(Event Player.isInvincible, 1);
+		Event Player.climbCnt += 1;
+		Event Player.check = 2;
+		Skip If(Event Player.climbCnt < 2, 3);
+		Event Player.isforcingqreset = True;
 		Call Subroutine(init);
-		Skip(1);
-		If(Array Contains(Global.BD, Custom String("벽타기")));
-			Event Player.AE = True;
+		Skip(6);
+		If(Array Contains(Global.bannedSkills, Custom String("벽타기")));
+			Event Player.isforcingqreset = True;
 			Call Subroutine(init);
-			Small Message(Event Player, Global.AR[12]);
-		Else If(Global.AW);
-			Small Message(Event Player, Global.AR[2]);
+			Small Message(Event Player, Global.text[12]);
+		Else If(Global.climbtext);
+			Small Message(Event Player, Global.text[2]);
 	}
 }
 
@@ -2223,13 +2238,13 @@ rule("판단 | 벽캔")
 	condition
 	{
 		Is On Wall(Event Player) == True;
-		Event Player.AA == False;
+		Event Player.climbCheck == False;
 		Has Spawned(Event Player) == True;
 	}
 
 	action
 	{
-		Event Player.AB += 1;
+		Event Player.multiclimbCheck += 1;
 	}
 }
 
@@ -2249,7 +2264,7 @@ rule("판단 | 감정표현")
 
 	action
 	{
-		Event Player.AK = 0;
+		Event Player.bhopCheck = 0;
 	}
 }
 
@@ -2275,17 +2290,17 @@ rule("판단 | 앉콩")
 
 	action
 	{
-		Event Player.AK = 0;
-		If(Array Contains(Global.BD, Custom String("앉콩")));
-			Event Player.AE = True;
+		Event Player.bhopCheck = 0;
+		If(Array Contains(Global.bannedSkills, Custom String("앉콩")));
+			Event Player.isforcingqreset = True;
 			Call Subroutine(init);
-			Small Message(Event Player, Global.AR[10]);
+			Small Message(Event Player, Global.text[10]);
 		Else;
-			If(Global.AT);
-				Event Player.AP = Color(Green);
+			If(Global.bhop);
+				Event Player.bhopColor = Color(Green);
 			End;
-			If(Global.AX);
-				Small Message(Event Player, Global.AR[4]);
+			If(Global.createbhoptext);
+				Small Message(Event Player, Global.text[4]);
 			End;
 	}
 }
@@ -2307,17 +2322,17 @@ rule("판단 | 착지")
 
 	action
 	{
-		Event Player.AB = 0;
-		Event Player.AA = False;
-		Skip If(!Event Player.AC && Distance Between(Position Of(Event Player), Global.A[Event Player.A]) > Global.N, 1);
-		Event Player.AL = 0;
+		Event Player.multiclimbCheck = 0;
+		Event Player.climbCheck = False;
+		Skip If(!Event Player.isInvincible && Distance Between(Position Of(Event Player), Global.A[Event Player.A]) > Global.N, 1);
+		Event Player.check = 0;
 		Wait(0, Ignore Condition);
-		Loop If(Event Player.AL != 0 && Is On Ground(Event Player) == True);
-		Event Player.AK = 1;
+		Loop If(Event Player.check != 0 && Is On Ground(Event Player) == True);
+		Event Player.bhopCheck = 1;
 	}
 }
 
-rule("판단 | 땅버그")
+disabled rule("판단 | 땅버그")
 {
 	event
 	{
@@ -2337,7 +2352,7 @@ rule("판단 | 땅버그")
 
 	action
 	{
-		Event Player.AF = 0;
+		Event Player.climbCnt = 0;
 	}
 }
 
@@ -2352,13 +2367,13 @@ rule("콩콩이 HUD 생성")
 
 	condition
 	{
-		Global.AT == True;
+		Global.bhop == True;
 		Has Spawned(Event Player) == True;
 	}
 
 	action
 	{
-		Create HUD Text(Event Player, Global.AR[1], Null, Null, Left, 10, Event Player.AP, Color(White), Color(White), Color,
+		Create HUD Text(Event Player, Global.text[1], Null, Null, Left, 10, Event Player.bhopColor, Color(White), Color(White), Color,
 			Default Visibility);
 	}
 }
@@ -2375,13 +2390,13 @@ rule("콩콩이 가능")
 	condition
 	{
 		Is Button Held(Event Player, Button(Jump)) == False;
-		Global.AT == True;
+		Global.bhop == True;
 		Is On Ground(Event Player) == True;
 	}
 
 	action
 	{
-		Event Player.AP = Color(Green);
+		Event Player.bhopColor = Color(Green);
 	}
 }
 
@@ -2397,19 +2412,19 @@ rule("콩콩이 불가")
 	condition
 	{
 		Is Jumping(Event Player) == True;
-		Global.AT == True;
+		Global.bhop == True;
 	}
 
 	action
 	{
-		Event Player.AP = Color(Red);
-		If(Event Player.AK == 0);
-			Event Player.AK = 1;
-			If(Array Contains(Global.BD, Custom String("콩콩이")));
+		Event Player.bhopColor = Color(Red);
+		If(Event Player.bhopCheck == 0);
+			Event Player.bhopCheck = 1;
+			If(Array Contains(Global.bannedSkills, Custom String("콩콩이")));
 				Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
-				Small Message(Event Player, Global.AR[13]);
-			Else If(Global.AU);
-				Small Message(Event Player, Global.AR[3]);
+				Small Message(Event Player, Global.text[13]);
+			Else If(Global.bhoptext);
+				Small Message(Event Player, Global.text[3]);
 	}
 }
 
@@ -2425,14 +2440,14 @@ rule("벽타기 가능")
 	condition
 	{
 		Has Spawned(Event Player) == True;
-		Global.AV == True;
+		Global.climb == True;
 	}
 
 	action
 	{
-		Create HUD Text(!Event Player.AA ? Event Player : Null, Custom String("{0}{1}", Global.AR[0], Event Player.AB > 0 ? Custom String(
-			"({0})", Event Player.AB) : Custom String("")), Null, Null, Left, 9, Color(Green), Color(White), Color(White),
-			Visible To and String, Default Visibility);
+		Create HUD Text(!Event Player.climbCheck ? Event Player : Null, Custom String("{0}{1}", Global.text[0],
+			Event Player.multiclimbCheck > 0 ? Custom String("({0})", Event Player.multiclimbCheck) : Custom String("")), Null, Null, Left,
+			9, Color(Green), Color(White), Color(White), Visible To and String, Default Visibility);
 	}
 }
 
@@ -2447,13 +2462,13 @@ rule("벽타기 불가")
 
 	condition
 	{
-		Global.AV == True;
+		Global.climb == True;
 	}
 
 	action
 	{
-		Create HUD Text(Filtered Array(Event Player, Current Array Element.AA == True), Global.AR[0], Null, Null, Left, 9, Color(Red),
-			Color(White), Color(White), Visible To, Default Visibility);
+		Create HUD Text(Filtered Array(Event Player, Current Array Element.climbCheck == True), Global.text[0], Null, Null, Left, 9, Color(
+			Red), Color(White), Color(White), Visible To, Default Visibility);
 	}
 }
 
@@ -2469,16 +2484,16 @@ rule("금지 | 삼단점프")
 	condition
 	{
 		Vertical Speed Of(Event Player) >= 5.800;
-		Event Player.AL == 1;
+		Event Player.check == 1;
 		Is Using Ability 1(Event Player) == False;
-		Array Contains(Global.BD, Custom String("삼단점프")) == True;
+		Array Contains(Global.bannedSkills, Custom String("삼단점프")) == True;
 	}
 
 	action
 	{
 		Abort If(Is On Wall(Event Player) == True);
 		Apply Impulse(Event Player, Down, Speed Of(Event Player), To Player, Cancel Contrary Motion);
-		Small Message(Event Player, Global.AR[8]);
+		Small Message(Event Player, Global.text[8]);
 	}
 }
 
@@ -2494,15 +2509,15 @@ rule("금지 | 감정표현")
 	condition
 	{
 		Is Communicating Any Emote(Event Player) == True;
-		Array Contains(Global.BD, Custom String("감정표현")) == True;
+		Array Contains(Global.bannedSkills, Custom String("감정표현")) == True;
 	}
 
 	action
 	{
-		Event Player.AE = True;
+		Event Player.isforcingqreset = True;
 		Call Subroutine(init);
-		Small Message(Event Player, Global.AR[11]);
-		Event Player.AK = 1;
+		Small Message(Event Player, Global.text[11]);
+		Event Player.bhopCheck = 1;
 	}
 }
 
@@ -2517,15 +2532,15 @@ rule("금지 | 벽캔")
 
 	condition
 	{
-		Event Player.AB > 0;
-		Array Contains(Global.BD, Custom String("벽캔")) == True;
+		Event Player.multiclimbCheck > 0;
+		Array Contains(Global.bannedSkills, Custom String("벽캔")) == True;
 	}
 
 	action
 	{
-		Event Player.AE = True;
+		Event Player.isforcingqreset = True;
 		Call Subroutine(init);
-		Small Message(Event Player, Global.AR[9]);
+		Small Message(Event Player, Global.text[9]);
 	}
 }
 
@@ -2538,21 +2553,21 @@ rule("디바 생성, 폭파")
 
 	condition
 	{
-		Global.BI == 1;
+		Global.dvacnt == 1;
 		Count Of(All Players(Team 1)) < 12;
 	}
 
 	action
 	{
 		Wait(3, Ignore Condition);
-		If(Global.AQ == 0);
+		If(Global.DvaPos == 0);
 			Small Message(Host Player, Custom String("현재 이 맵은 울타리 부수기 설정이 되어있지 않습니다."));
 		Else;
-			Global.BI = 0;
-			While(Global.BI < Count Of(Global.AQ));
-				While(Number Of Players(Team 1) < 11 && Global.BI < Count Of(Global.AQ));
-					Create Dummy Bot(Hero(D.Va), Team 1, -1, Global.AQ[Global.BI], Up);
-					Global.BI += 1;
+			Global.dvacnt = 0;
+			While(Global.dvacnt < Count Of(Global.DvaPos));
+				While(Number Of Players(Team 1) < 11 && Global.dvacnt < Count Of(Global.DvaPos));
+					Create Dummy Bot(Hero(D.Va), Team 1, -1, Global.DvaPos[Global.dvacnt], Up);
+					Global.dvacnt += 1;
 				End;
 				Wait(1, Ignore Condition);
 				Set Ultimate Ability Enabled(Players On Hero(Hero(D.Va), Team 1), True);
@@ -2562,7 +2577,7 @@ rule("디바 생성, 폭파")
 				Wait(3, Ignore Condition);
 				Destroy All Dummy Bots;
 			End;
-			Global.BI = -1;
+			Global.dvacnt = -1;
 	}
 }
 
@@ -2578,46 +2593,46 @@ rule("디바 자폭 위치")
 	{
 		"\"리장 타워, 부산, 일리오스는 일단 보류 나머지 맵들부터 채워넣기\""
 		Disable Inspector Recording;
-		Global.BP = Custom String("{0}", Current Map);
-		If(Global.BP == Custom String("리알토"));
-			Global.AQ = Array(Vector(0.235, 6.949, -54.319), Vector(-4.961, 6.960, -70.946), Vector(-15.015, 6.947, -53.262), Vector(-14.369,
-				0.046, -67.571), Vector(52.320, 5.950, -33.687), Vector(62.242, 5.950, -39.633), Vector(66.693, 5.950, -25.967), Vector(78.625,
-				4.958, -13.893), Vector(78.368, 4.950, -25.307), Vector(84.183, 4.950, -32.765), Vector(91.160, 0.935, -25.304), Vector(90.277,
-				0.935, -16.372), Vector(103.726, 6.950, -33.435), Vector(112.225, 6.950, -11.564), Vector(99.743, 0.950, -47.350), Vector(
-				38.010, 6.950, -68.460), Vector(38.479, 6.950, -82.038), Vector(48.911, 6.950, -87.966), Vector(-2.172, 6.950, -42.113),
-				Vector(3.426, 4.950, -33.054), Vector(-44.746, 3.939, -89.839), Vector(-63.559, 3.950, -137.299), Vector(-49.755, 3.950,
-				-137.464), Vector(-28.269, 5.950, -82.012), Vector(-20.060, 2.634, -84.364), Vector(40.302, 6.950, -47.652), Vector(59.303,
-				6.950, -19.675));
-		Else If(Global.BP == Custom String("도라도"));
-			Global.AQ = Array(Vector(113.039, 18, 0.411), Vector(106.505, 18, -3.794), Vector(100.159, 20, 29.547), Vector(119.021, 18,
+		Global.MapName = Custom String("{0}", Current Map);
+		If(Global.MapName == Custom String("리알토"));
+			Global.DvaPos = Array(Vector(0.235, 6.949, -54.319), Vector(-4.961, 6.960, -70.946), Vector(-15.015, 6.947, -53.262), Vector(
+				-14.369, 0.046, -67.571), Vector(52.320, 5.950, -33.687), Vector(62.242, 5.950, -39.633), Vector(66.693, 5.950, -25.967),
+				Vector(78.625, 4.958, -13.893), Vector(78.368, 4.950, -25.307), Vector(84.183, 4.950, -32.765), Vector(91.160, 0.935, -25.304),
+				Vector(90.277, 0.935, -16.372), Vector(103.726, 6.950, -33.435), Vector(112.225, 6.950, -11.564), Vector(99.743, 0.950,
+				-47.350), Vector(38.010, 6.950, -68.460), Vector(38.479, 6.950, -82.038), Vector(48.911, 6.950, -87.966), Vector(-2.172, 6.950,
+				-42.113), Vector(3.426, 4.950, -33.054), Vector(-44.746, 3.939, -89.839), Vector(-63.559, 3.950, -137.299), Vector(-49.755,
+				3.950, -137.464), Vector(-28.269, 5.950, -82.012), Vector(-20.060, 2.634, -84.364), Vector(40.302, 6.950, -47.652), Vector(
+				59.303, 6.950, -19.675));
+		Else If(Global.MapName == Custom String("도라도"));
+			Global.DvaPos = Array(Vector(113.039, 18, 0.411), Vector(106.505, 18, -3.794), Vector(100.159, 20, 29.547), Vector(119.021, 18,
 				34.607), Vector(132.642, 16.697, 43.188), Vector(129.473, 12.012, 50.587), Vector(112.545, 11, 47.479), Vector(80.688, 20,
 				24.710), Vector(69.703, 17, 40.598), Vector(84.938, 14.302, 40.440), Vector(94.461, 14.292, 47.987), Vector(98.180, 18.012,
 				7.246), Vector(47.973, 9, 3.540), Vector(149.060, 15.849, 16.459), Vector(154.641, 11.970, 12.383), Vector(154.293, 14.012,
 				44.260), Vector(170.440, 18.012, 56.821), Vector(192.375, 18.012, 74.295), Vector(199.885, 15.012, 63.386), Vector(196.810,
 				13.464, 56.831), Vector(36.340, 4.009, -20.595), Vector(17.536, 4, -43.526), Vector(33.385, 2.002, -2.863), Vector(-6.540,
 				0.168, 12.159));
-		Else If(Global.BP == Custom String("할리우드"));
-		Else If(Global.BP == Custom String("하나무라"));
-		Else If(Global.BP == Custom String("리장 타워") || Global.BP == Custom String("리장 타워 (설날)"));
-		Else If(Global.BP == Custom String("블리자드 월드") || Global.BP == Custom String("블리자드 월드 (겨울)"));
-		Else If(Global.BP == Custom String("아이헨발데") || Global.BP == Custom String("아이헨발데 (할로윈)"));
-		Else If(Global.BP == Custom String("66번 국도"));
-			Global.AQ = Array(Vector(42.483, 3.584, 57.946), Vector(57.677, 3.584, 58.506), Vector(-22.613, 9.617, -19.764), Vector(-31.210,
-				9.632, -27.366), Vector(-37.461, 9.637, -16.753), Vector(-34.417, 9.641, -9.883), Vector(-76.174, 11.700, -5.487), Vector(
-				-68.563, 11.700, -18.563), Vector(-76.454, 10.829, -22.762), Vector(-105.328, 9.700, -18.601), Vector(55.524, 2.087, 25.894),
-				Vector(60.073, 3.578, 12.586), Vector(53.342, 3.499, 3.937), Vector(17.378, 3.295, -1.869), Vector(-10.735, 4.508, -19.790),
-				Vector(-21.166, 4.508, -34.818), Vector(-36.442, 4.508, -38.174), Vector(5.436, 3.294, -7.928), Vector(71.684, 1.128, 15.491),
-				Vector(62.374, 3.519, -0.998), Vector(39.788, 3.295, 8.521), Vector(28.680, 8.216, 22.142), Vector(8.608, 8.360, 16.467),
-				Vector(35.356, 6.629, -20.277));
-		Else If(Global.BP == Custom String("하바나"));
-		Else If(Global.BP == Custom String("눔바니"));
-		Else If(Global.BP == Custom String("파리"));
-		Else If(Global.BP == Custom String("일리오스"));
-		Else If(Global.BP == Custom String("볼스카야 인더스트리"));
-		Else If(Global.BP == Custom String("호라이즌 달 기지"));
-		Else If(Global.BP == Custom String("쓰레기촌"));
-		Else If(Global.BP == Custom String("부산"));
-		Else If(Global.BP == Custom String("오아시스"));
+		Else If(Global.MapName == Custom String("할리우드"));
+		Else If(Global.MapName == Custom String("하나무라"));
+		Else If(Global.MapName == Custom String("리장 타워") || Global.MapName == Custom String("리장 타워 (설날)"));
+		Else If(Global.MapName == Custom String("블리자드 월드") || Global.MapName == Custom String("블리자드 월드 (겨울)"));
+		Else If(Global.MapName == Custom String("아이헨발데") || Global.MapName == Custom String("아이헨발데 (할로윈)"));
+		Else If(Global.MapName == Custom String("66번 국도"));
+			Global.DvaPos = Array(Vector(42.483, 3.584, 57.946), Vector(57.677, 3.584, 58.506), Vector(-22.613, 9.617, -19.764), Vector(
+				-31.210, 9.632, -27.366), Vector(-37.461, 9.637, -16.753), Vector(-34.417, 9.641, -9.883), Vector(-76.174, 11.700, -5.487),
+				Vector(-68.563, 11.700, -18.563), Vector(-76.454, 10.829, -22.762), Vector(-105.328, 9.700, -18.601), Vector(55.524, 2.087,
+				25.894), Vector(60.073, 3.578, 12.586), Vector(53.342, 3.499, 3.937), Vector(17.378, 3.295, -1.869), Vector(-10.735, 4.508,
+				-19.790), Vector(-21.166, 4.508, -34.818), Vector(-36.442, 4.508, -38.174), Vector(5.436, 3.294, -7.928), Vector(71.684, 1.128,
+				15.491), Vector(62.374, 3.519, -0.998), Vector(39.788, 3.295, 8.521), Vector(28.680, 8.216, 22.142), Vector(8.608, 8.360,
+				16.467), Vector(35.356, 6.629, -20.277));
+		Else If(Global.MapName == Custom String("하바나"));
+		Else If(Global.MapName == Custom String("눔바니"));
+		Else If(Global.MapName == Custom String("파리"));
+		Else If(Global.MapName == Custom String("일리오스"));
+		Else If(Global.MapName == Custom String("볼스카야 인더스트리"));
+		Else If(Global.MapName == Custom String("호라이즌 달 기지"));
+		Else If(Global.MapName == Custom String("쓰레기촌"));
+		Else If(Global.MapName == Custom String("부산"));
+		Else If(Global.MapName == Custom String("오아시스"));
 	}
 }
 
@@ -2637,7 +2652,7 @@ disabled rule("디바 위치 저장용")
 
 	action
 	{
-		Global.BL = Append To Array(Global.BL, Position Of(Event Player));
+		Global.dvaposSaver = Append To Array(Global.dvaposSaver, Position Of(Event Player));
 		Small Message(All Players(All Teams), Custom String("위치 저장됨."));
 	}
 }
@@ -2659,7 +2674,7 @@ disabled rule("타이머 바꾸기")
 
 	action
 	{
-		Event Player.AD = !Event Player.AD;
+		Event Player.Time = !Event Player.Time;
 	}
 }
 
@@ -2674,11 +2689,11 @@ rule("플레이어 초기 설정")
 
 	action
 	{
-		Event Player.AI = True;
-		Skip If(Array Contains(Global.BM, Custom String("{0}", Event Player)) || Hero Of(Event Player) == Hero(D.Va), 1);
-		Modify Global Variable(BM, Append To Array, Custom String("{0}", Event Player));
+		Event Player.isInvinciblePossible = True;
+		Skip If(Array Contains(Global.playerList, Custom String("{0}", Event Player)) || Hero Of(Event Player) == Hero(D.Va), 1);
+		Modify Global Variable(playerList, Append To Array, Custom String("{0}", Event Player));
 		Skip If(Global.O, 1);
-		Event Player.AC = True;
+		Event Player.isInvincible = True;
 	}
 }
 
@@ -2693,15 +2708,16 @@ rule("플레이어 단계 로드")
 
 	condition
 	{
-		Array Contains(Global.BM, Custom String("{0}", Event Player)) == True;
+		Array Contains(Global.playerList, Custom String("{0}", Event Player)) == True;
 		Has Spawned(Event Player) == True;
 	}
 
 	action
 	{
-		Event Player.B = Global.BN[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))];
-		Event Player.A = Global.BN[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))];
-		Event Player.L = Total Time Elapsed - Global.BO[Index Of Array Value(Global.BM, Custom String("{0}", Event Player))];
+		Event Player.B = Global.playerLevel[Index Of Array Value(Global.playerList, Custom String("{0}", Event Player))];
+		Event Player.A = Global.playerLevel[Index Of Array Value(Global.playerList, Custom String("{0}", Event Player))];
+		Event Player.L = Total Time Elapsed - Global.playerTime[Index Of Array Value(Global.playerList, Custom String("{0}", Event Player))
+			];
 		Call Subroutine(init);
 	}
 }
@@ -2717,9 +2733,9 @@ rule("test")
 
 	action
 	{
-		disabled Create HUD Text(Event Player, Event Player.AF, Null, Null, Left, 0, Color(White), Color(White), Color(White),
+		disabled Create HUD Text(Event Player, Event Player.climbCnt, Null, Null, Left, 0, Color(White), Color(White), Color(White),
 			Visible To and String, Default Visibility);
-		disabled Create HUD Text(Event Player, Custom String("{0} / {1}", Global.BI, Count Of(Global.AQ)), Null, Null, Left, 0, Color(White), Color(
-			White), Color(White), Visible To and String, Default Visibility);
+		disabled Create HUD Text(Event Player, Custom String("{0} / {1}", Global.dvacnt, Count Of(Global.DvaPos)), Null, Null, Left, 0, Color(
+			White), Color(White), Color(White), Visible To and String, Default Visibility);
 	}
 }

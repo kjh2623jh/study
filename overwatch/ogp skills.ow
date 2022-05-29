@@ -1,0 +1,709 @@
+settings
+{
+	lobby
+	{
+		최대 1팀 플레이어 수: 12
+		최대 2팀 플레이어 수: 0
+		최대 관전자 수: 0
+	}
+
+	modes
+	{
+		연습 전투
+		{
+			enabled maps
+			{
+				리알토
+			}
+		}
+
+		일반
+		{
+			무작위 영웅으로 부활: 활성화
+			영웅 제한: 비활성화
+		}
+	}
+
+	heroes
+	{
+		일반
+		{
+			겐지
+			{
+				질풍참 재사용 대기시간: 0%
+				탄창 제한 없음: 활성화
+			}
+
+			enabled heroes
+			{
+				겐지
+			}
+		}
+	}
+}
+
+variables
+{
+	player:
+		0: jump
+		1: double_jump
+		2: triple_jump
+		3: edge_climb
+		4: crouch_edge
+		5: save_climb
+		6: save_climb_crouch_edge
+		7: multi_climb
+		8: create_bhop
+		9: bhop
+		10: dash
+		11: emote
+		12: climb
+		13: switch
+		14: speedcheck
+		15: bhop_pos
+}
+
+rule("init")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	action
+	{
+		Event Player.jump = False;
+		Event Player.double_jump = False;
+		Event Player.triple_jump = False;
+		Event Player.edge_climb = False;
+		Event Player.crouch_edge = False;
+		Event Player.save_climb = False;
+		Event Player.save_climb_crouch_edge = False;
+		Event Player.multi_climb = False;
+		Event Player.create_bhop = False;
+		Event Player.bhop = False;
+		Event Player.dash = False;
+		Event Player.emote = False;
+		Event Player.climb = False;
+	}
+}
+
+disabled rule("--------판단---------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+rule("바닥")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Ground(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.jump = False;
+		Event Player.double_jump = False;
+		Event Player.triple_jump = False;
+		Event Player.emote = False;
+		Event Player.climb = False;
+		Event Player.bhop = False;
+	}
+}
+
+rule("점프 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Jumping(Event Player) == True;
+		Event Player.bhop == False;
+	}
+
+	action
+	{
+		Event Player.jump = True;
+	}
+}
+
+rule("2단 점프")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+}
+
+rule("3단 점프 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is In Air(Event Player) == True;
+	}
+
+	action
+	{
+		Wait(0.010, Ignore Condition);
+		If(Vertical Speed Of(Event Player) >= 5.800 && !Is Using Ability 1(Event Player) && !Event Player.climb);
+			Event Player.triple_jump = True;
+	}
+}
+
+rule("벽타기 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is On Wall(Event Player) == True;
+		Is Button Held(Event Player, Button(Jump)) == True;
+	}
+
+	action
+	{
+		Event Player.climb = True;
+	}
+}
+
+rule("무벽")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+}
+
+rule("앉벽")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+}
+
+rule("대각")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+}
+
+rule("앉대각")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+}
+
+rule("벽캔 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Is On Wall(Event Player) == True;
+		Event Player.climb == False;
+	}
+
+	action
+	{
+		Event Player.multi_climb = True;
+	}
+}
+
+rule("콩콩이 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is In Air(Event Player) == True;
+	}
+
+	action
+	{
+		Wait(0.010, Ignore Condition);
+		If(!Is Button Held(Event Player, Button(Jump)) || Is Using Ability 1(Event Player));
+			Event Player.bhop = True;
+	}
+}
+
+rule("감정표현 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Communicating Any Emote(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.emote = True;
+	}
+}
+
+rule("질풍참 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Using Ability 1(Event Player) == True;
+	}
+
+	action
+	{
+		Event Player.dash = True;
+	}
+}
+
+rule("앉콩 a")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Crouching(Event Player) == True;
+		Is Button Held(Event Player, Button(Crouch)) == True;
+		Is In Air(Event Player) == True;
+		Is On Wall(Event Player) == False;
+		Is Jumping(Event Player) == False;
+		Is Button Held(Event Player, Button(Jump)) == False;
+		Is On Ground(Event Player) == False;
+	}
+
+	action
+	{
+		Event Player.create_bhop = True;
+	}
+}
+
+disabled rule("--------출력---------")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+rule("점프")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.jump == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("점프"));
+	}
+}
+
+rule("2단 점프")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.double_jump == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("2단 점프"));
+	}
+}
+
+rule("3단 점프")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.triple_jump == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("3단 점프"));
+	}
+}
+
+rule("벽타기")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.climb == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("벽타기"));
+	}
+}
+
+rule("무벽")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.edge_climb == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("무벽"));
+		Event Player.edge_climb = False;
+	}
+}
+
+rule("앉벽")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.crouch_edge == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("앉벽"));
+		Event Player.crouch_edge = False;
+	}
+}
+
+rule("대각")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.save_climb == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("대각"));
+		Event Player.save_climb = False;
+	}
+}
+
+rule("앉대각")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.save_climb_crouch_edge == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("앉대각"));
+		Event Player.save_climb_crouch_edge = False;
+	}
+}
+
+rule("벽캔")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.multi_climb == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("벽캔"));
+		Event Player.multi_climb = False;
+	}
+}
+
+rule("콩콩이")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.bhop == True;
+		Is Jumping(Event Player) == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("콩콩이"));
+		Event Player.bhop_pos = Position Of(Event Player);
+		Wait(0.016, Ignore Condition);
+		Event Player.bhop = False;
+	}
+}
+
+rule("감정표현")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.emote == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("감정표현"));
+	}
+}
+
+rule("질풍참")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.dash == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("질풍참"));
+		Event Player.dash = False;
+	}
+}
+
+rule("앉콩")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Event Player.create_bhop == True;
+	}
+
+	action
+	{
+		Small Message(Event Player, Custom String("앉콩"));
+		Event Player.create_bhop = False;
+	}
+}
+
+disabled rule("")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+}
+
+rule("HUDtext")
+{
+	event
+	{
+		Ongoing - Global;
+	}
+
+	action
+	{
+		Create HUD Text(Local Player, Null, Null, Custom String("press interact"), Left, -1, Color(White), Color(White), Color(White),
+			Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is jumping: {0}", Is Jumping(Local Player)), Null, Null,
+			Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is crouching: {0}", Is Crouching(Local Player)), Null,
+			Null, Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is in air: {0}", Is In Air(Local Player)), Null, Null,
+			Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is on ground: {0}", Is On Ground(Local Player)), Null,
+			Null, Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is on wall: {0}", Is On Wall(Local Player)), Null, Null,
+			Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is standing: {0}", Is Standing(Local Player)), Null,
+			Null, Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("is moving: {0}", Is Moving(Local Player)), Null, Null,
+			Left, 0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("speed: {0}", Local Player.speedcheck), Null, Null, Right,
+			0, Color(White), Color(White), Color(White), Visible To and String, Default Visibility);
+		Create HUD Text(Local Player.switch ? Local Player : Null, Custom String("curr_y_pos: {0}\r\nbhop_y_pos: {1}", Y Component Of(
+			Position Of(Local Player)), Y Component Of(Local Player.bhop_pos)), Null, Null, Right, 0, Color(White), Color(White), Color(
+			White), Visible To and String, Default Visibility);
+	}
+}
+
+rule("infoSwitch")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Interact)) == True;
+	}
+
+	action
+	{
+		Event Player.switch = !Event Player.switch;
+	}
+}
+
+rule("speedUpdate")
+{
+	event
+	{
+		Ongoing - Each Player;
+		All;
+		All;
+	}
+
+	condition
+	{
+		Is Button Held(Event Player, Button(Jump)) == True;
+	}
+
+	action
+	{
+		Wait(0.016, Ignore Condition);
+		Event Player.speedcheck = Speed Of(Event Player);
+	}
+}
