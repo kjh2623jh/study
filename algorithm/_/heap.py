@@ -51,7 +51,7 @@ class MyHeap:
         for i in self.heap[1:]:
             result.append(i)
             child = len(result)-1
-            while child!=1 and result[child] < result[parent:=child//2]:
+            while child!=1 and result[child] < result[(parent:=child//2)]:
                 result[child],result[parent]=result[parent],result[child]
                 child=parent
         
@@ -66,7 +66,7 @@ class MyHeap:
     def append(self, num):
         self.heap.append(num)
         child = len(self.heap)-1
-        while child!=1 and self.heap[child] > self.heap[parent:=child//2]:
+        while child!=1 and self.heap[child] > self.heap[(parent:=child//2)]:
             self.heap[child],self.heap[parent]=self.heap[parent],self.heap[child]
             child=parent
 
@@ -77,8 +77,8 @@ class MyHeap:
         parent = num
 
         while 1:
-            if self.heap[parent]<self.heap[child:=parent*2] or \
-               self.heap[parent]<self.heap[child:=parent*2+1]:
+            if self.heap[parent]<self.heap[(child:=parent*2)] or \
+               self.heap[parent]<self.heap[(child:=parent*2+1)]:
                 self.heap[parent],self.heap[child]=self.heap[child],self.heap[parent]
                 parent=child
             else:
