@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kjh26\\OneDrive\\Document\\GIthub\\study\\study.csproj",
+      "projectUniqueName": "C:\\Users\\kjh26\\OneDrive\\Document\\GIthub\\study\\CsStudy\\study.csproj",
       "projectName": "study",
-      "projectPath": "C:\\Users\\kjh26\\OneDrive\\Document\\GIthub\\study\\study.csproj",
+      "projectPath": "C:\\Users\\kjh26\\OneDrive\\Document\\GIthub\\study\\CsStudy\\study.csproj",
       "packagesPath": "C:\\Users\\kjh26\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kjh26\\OneDrive\\Document\\GIthub\\study\\obj\\",
+      "outputPath": "C:\\Users\\kjh26\\OneDrive\\Document\\GIthub\\study\\CsStudy\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\kjh26\\AppData\\Roaming\\NuGet\\NuGet.Config"

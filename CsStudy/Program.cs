@@ -1,5 +1,6 @@
 ﻿namespace SoloLearn
 {
+    //   dotnet run --project ./CsStudy
     class Program
     {
         // static: not public
